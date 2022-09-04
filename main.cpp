@@ -1,5 +1,5 @@
 #include <iostream>
-#include "scanner.cpp"
+#include "scanner.hpp"
 
 int main() {
     std::cout<<"hello world";
