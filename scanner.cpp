@@ -150,7 +150,6 @@ Token Scanner::nextToken() {
         }
         continue;
       }
-
       // do not read comments
       if (cur == '{') {
         while (cur != '}') {
