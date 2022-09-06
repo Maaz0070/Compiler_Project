@@ -1,8 +1,10 @@
 #include <iostream>
+#include <iomanip>
 #include "scanner.hpp"
 
 void printTok(Token tok) {
-    std::cout << tok.value << "\t";
+    std::cout << std::setw(60) << std::left << tok.value  << std::setfill(' ');
+    std::cout << std::setw(20);
     if (tok.type == WORD) {
         std::cout << " WORD";
     } else if (tok.type == NUMBER) {
@@ -16,11 +18,17 @@ void printTok(Token tok) {
     } else {
         std::cout << " INVALID";
     }
+    std::cout << std::setfill(' ');
+
+    std::cout << std::setw(20);
+    std::cout << std::left << tok.label;
 }
 
 int main() {
     Scanner scanner("P2.pas");
     Token token = scanner.nextToken();
+    int width = 60;
+    std::cout << "Token" << std::setw(width) << std::setfill(' ') << "TokenType" << std::setw(20) << std::setfill(' ') << "Label" << std::endl;
     while (!scanner.isEOF) {
         printTok(token);
         std::cout << std::endl;

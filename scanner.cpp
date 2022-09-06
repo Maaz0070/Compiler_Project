@@ -19,6 +19,8 @@ Scanner::Scanner(std::string fileName) {
     };
     specialChars = {'+', '-', '*', '/', ';', ':', '>', '<', '(', ')', '[', ']', ',', ';', '"'};
     specialSuffixes = {'=', '.', '&', '|'};
+    lookupKeywords = {"program", "begin", "end", "var", "integer", "real", "procedure", "function", "if", "then", "else", "while", "do", "repeat", "until", "for", "to", "downto", "case", "of", "goto"},
+    lookupOperators = {"+", "-", "*", "/", ":=", "=", "<>", "<", "<=", ">", ">=", "(", ")", "[", "]", ",", ":", ";", ".", "..", };
     line = 0;
     consumingString = false;
     isEOF = false;
@@ -50,13 +52,35 @@ void getTokenType(Token& res, int state) {
     }
 }
 
-void look_up(Token& res) {
-    
-    for(std::multimap<tokenTypes, std::string>::iterator it = lookupTable.begin(); it != lookupTable.end(); it++){
-        if(it->second == res.value){
-            res.type = it->first;
-        }
+std::string toLower(std::string str) {
+    std::string res = "";
+    for (int i = 0; i < str.length(); i++) {
+        res += tolower(str[i]);
     }
+    return res;
+}
+
+void Scanner::look_up(Token& res) {
+    res.isKeyword = false;
+    if (res.type == WORD) {
+      for(auto keyword : lookupKeywords) {
+        if(keyword == toLower(res.value)){
+            res.label = keyword;
+            res.isKeyword = true;
+            return;
+        }
+      }
+      res.label = "WORD";
+    } else if (res.type==SPECIAL){
+      for(auto op : lookupOperators) {
+        if(op == res.value){
+            res.label = op;
+            res.isKeyword = true;
+            return;
+        } 
+      }
+    } 
+    res.label = "STRING";
     return;
 
 }
@@ -78,6 +102,7 @@ Token Scanner::nextToken() {
       if (cur == EOF) {
         isEOF = true;
         getTokenType(res, state);
+        look_up(res);
         return res;
       }
       getTokenType(res, state);
@@ -91,6 +116,7 @@ Token Scanner::nextToken() {
       if (consumingString){
         if (flag) {
           flag = false;
+          look_up(res);
           return res;
         }
         tmpString += cur;
@@ -104,9 +130,11 @@ Token Scanner::nextToken() {
         if (tmpString.length() > 1) {
           res.value = "\'" + tmpString + '\'';
           consumingString = !consumingString;
+          look_up(res);
           return res;
         } else {
           res.value += " ";
+          look_up(res);
           return res;
         }
         
@@ -127,6 +155,18 @@ Token Scanner::nextToken() {
       if (cur == '{') {
         while (cur != '}') {
           cur = file.get();
+        }
+        file.get();
+        continue;
+      }
+      if (cur == '/') {
+        if (file.get()=='/') {
+          while (cur != '\n') {
+            cur = file.get();
+          }
+          continue;
+        } else {
+          file.putback(cur);
         }
         file.get();
         continue;
@@ -157,8 +197,7 @@ Token Scanner::nextToken() {
       if (state!=-1) res.value += cur;
       else file.putback(cur);
     }
-
     
-
+    look_up(res);
     return res; 
 }
