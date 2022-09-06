@@ -50,6 +50,17 @@ void getTokenType(Token& res, int state) {
     }
 }
 
+void look_up(Token& res) {
+    
+    for(std::multimap<tokenTypes, std::string>::iterator it = lookupTable.begin(); it != lookupTable.end(); it++){
+        if(it->second == res.value){
+            res.type = it->first;
+        }
+    }
+    return;
+
+}
+
 bool isWhitespace(char cur) {
   return cur == ' ' || cur == '\t' || cur == '\n' || cur == '\r';
 }
@@ -106,6 +117,7 @@ Token Scanner::nextToken() {
           line++;
         }
         if (res.value != "") {
+          look_up(res);
           return res;
         }
         continue;

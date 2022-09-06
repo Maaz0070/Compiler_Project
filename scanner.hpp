@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <set>
+#include <map>
 
 enum keyword {
     // Reserved words
@@ -70,6 +71,13 @@ struct Token {
     keyword label;
 };
 
+std::multimap<tokenTypes, std::string> lookupTable = {
+    {WORD, "program", "begin", "end", "var", "integer", "real", "procedure", "function", "if", "then", "else", "while", "do", "repeat", "until", "for", "to", "downto", "case", "of", "goto"},
+    {OPERATOR, "+", "-", "*", "/", ":=", "=", "<>", "<", "<=", ">", ">=", "(", ")", "[", "]", ",", ":", ";", ".", "..", },
+};
+
+
+
 class Scanner {
     private:
         std::string fileName;
@@ -81,6 +89,7 @@ class Scanner {
         std::vector< std::vector<int> > transitionTable;
         std::set<char> specialChars;
         std::set<char> specialSuffixes;
+        std::multimap<tokenTypes, std::string> lookupTable;
     
     public:
         Scanner(std::string fileName);
