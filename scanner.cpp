@@ -9,13 +9,16 @@ Scanner::Scanner(std::string fileName) {
         exit(1);
     } 
 
-    // transition table (check discord for image)
+    // used for state transitions to get next state val
+    // rows: state
+    // columns: transition (current character)
+    // column lables: [ [A-Z, a-z, _], [0-9], [speicalChars], [specialSuffixes] ]
     transitionTable = {
-        {1, 2, 3, 3},
-        {1, 1, -1, -1},
-        {-1, 2, -1, -1,},
-        {-1, -1, -1, 4,},
-        {-1, -1, -1, -1},
+        {1, 2, 3, 3},         // state 0
+        {1, 1, -1, -1},       // state 1
+        {-1, 2, -1, -1,},     // state 2
+        {-1, -1, -1, 4,},     // state 3
+        {-1, -1, -1, -1},     // state 4
     };
     specialChars = {'+', '-', '*', '/', ';', ':', '>', '<', '(', ')', '[', ']', ',', ';', '"'};
     specialSuffixes = {'=', '.', '&', '|'};
