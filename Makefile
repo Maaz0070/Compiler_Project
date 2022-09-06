@@ -1,4 +1,4 @@
-CC=gcc
+CC=g++
 output: main.o scanner.o
 	$(CC) -g main.o scanner.o -o output
 
