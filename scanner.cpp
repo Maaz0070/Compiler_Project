@@ -17,6 +17,12 @@
 #define RCURL 12
 
 Scanner::Scanner(std::string fileName) {
+/*
+    input: takes in filename as a string which uses to open a file stream.
+    output: a stream of tokens.
+    Functionality: To read and check if the file can be opned, if not the code
+                   exits with an error message.
+*/
     file.open(fileName);
     if(!file){
         std::cerr <<"Error: file not found.";
