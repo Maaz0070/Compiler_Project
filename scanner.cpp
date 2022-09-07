@@ -120,6 +120,8 @@ Token Scanner::nextToken() {
     Token res;
     res.value = "";
     bool flag = false;
+    bool qflag = false;
+
 
     while (!file.eof() && state != -1) {
       cur = file.get();
@@ -134,29 +136,6 @@ Token Scanner::nextToken() {
       if (state==0 && isWhitespace(cur)) {
         continue;
       }
-
-      if (special1char.find(cur) != special1char.end()) {
-        char tmp = cur;
-        std::string tmpString = "";
-        cur = file.get();
-        if (special1char.find(cur) != special1char.end() || special2char.find(cur) != special2char.end()) {
-          tmpString.push_back(tmp);
-          tmpString.push_back(cur);
-          if (special3char.find(tmpString) != special3char.end()) {
-            res.value = tmpString;
-            getTokenType(res, 5);
-            look_up(res);
-            return res;
-          } 
-          
-        } 
-        file.putback(cur);
-        cur = tmp;
-        res.value = cur;
-        getTokenType(res, 4);
-        return res;
-      }
-
       if (cur == '(' || cur == '[' || cur == '{') {
         opStack.push(cur);
         res.type = SPECIAL1;
@@ -181,6 +160,36 @@ Token Scanner::nextToken() {
           return res;
         }
       }
+
+      if (cur == '\''){
+        qflag = !qflag;
+      }
+      
+      if (special1char.find(cur) != special1char.end() && !qflag) {
+        char tmp = cur;
+        std::string tmpString = "";
+        cur = file.get();
+        if (special1char.find(cur) != special1char.end() || special2char.find(cur) != special2char.end()) {
+          tmpString.push_back(tmp);
+          tmpString.push_back(cur);
+          if (special3char.find(tmpString) != special3char.end()) {
+            res.value = tmpString;
+            getTokenType(res, 5);
+            look_up(res);
+            return res;
+          } 
+          
+        } 
+        file.putback(cur);
+        cur = tmp;
+        res.value = cur;
+        getTokenType(res, 4);
+        return res;
+      }
+      
+      
+
+      
 
       // if (cur == '\'') {
       //   consumingString = !consumingString;
@@ -299,12 +308,14 @@ int Scanner::getTransition(char input) {
   else if (special1char.find(input) != special1char.end()) {
     return 3;
   } 
-  // else if (special2char.find(input) != special2char.end()) {
-  //   return 4;
-  // } 
+  else if (special2char.find(input) != special2char.end()) {
+    return 4;
+  }
   else if (input == '\'') {
     return 5;
-  } else if (isWhitespace(input)) {
+  } 
+
+  else if (isWhitespace(input)) {
     return 6;
   }else {
     return -1;
