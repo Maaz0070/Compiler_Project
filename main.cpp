@@ -7,14 +7,16 @@ void printTok(Token tok) {
     std::cout << std::setw(20);
     if (tok.type == WORD) {
         std::cout << " WORD";
-    } else if (tok.type == NUMBER) {
-        std::cout << " NUMBER";
-    } else if (tok.type == OPERATOR) {
-        std::cout << " OPERATOR";
-    } else if (tok.type == SPECIAL) {
-        std::cout << " SPECIAL";
-    } else if (tok.type == STRLITERAL) {
-        std::cout << " STRLITERAL";
+    } else if (tok.type == INTEGERS) {
+        std::cout << " INTEGERS";
+    } else if (tok.type == DECIMAL) {
+        std::cout << " DECIMAL";
+    } else if (tok.type == SPECIAL1) {
+        std::cout << " SPECIAL1";
+    } else if (tok.type == SPECIAL2) {
+        std::cout << " SPECIAL2";
+    } else if (tok.type == QUOTES) {
+        std::cout << " QUOTES";
     } else {
         std::cout << " INVALID";
     }
@@ -24,8 +26,10 @@ void printTok(Token tok) {
     std::cout << std::left << tok.label;
 }
 
+//masterTestCase.txt
 int main() {
-    Scanner scanner("P2.pas");
+    Scanner scanner("masterTestCase.txt");
+
     Token token = scanner.nextToken();
     int width = 60;
     std::cout << "Token" << std::setw(width) << std::setfill(' ') << "TokenType" << std::setw(20) << std::setfill(' ') << "Label" << std::endl;

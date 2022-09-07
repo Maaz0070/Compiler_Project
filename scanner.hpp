@@ -58,11 +58,12 @@
 // };
 enum tokenTypes {
     WORD,
-    NUMBER,
-    OPERATOR,
-    SPECIAL,
+    INTEGERS,
+    DECIMAL,
+    SPECIAL1,
+    SPECIAL2,
     INVALID,
-    STRLITERAL
+    QUOTES
 };
 
 struct Token {
@@ -83,10 +84,12 @@ class Scanner {
         char nextChar;
         bool consumingString;
         std::vector< std::vector<int> > transitionTable;
-        std::set<char> specialChars;
-        std::set<char> specialSuffixes;
+        std::set<char> special1char;
+        std::set<char> special2char;
+        std::set<std::string> special3char;
         std::set<std::string> lookupKeywords;
         std::set<std::string> lookupOperators;
+        std::stack<char> opStack;
         
     
     public:
@@ -94,4 +97,6 @@ class Scanner {
         void look_up(Token& res);
         bool isEOF;
         Token nextToken();
+        int getTransition(char input);
+        int nextState(int curState, char input);
 };
