@@ -1,0 +1,22 @@
+program P2 ;
+var 
+    i : integer ;
+
+be
+
+ integer;         
+    len_A, len_B, i, n:integer;
+
+begin
+    
+
+    i := 1;
+    
+          e of array A
+
+    i := 1;
+
+    writeln('Please input the second list of integer (MAX: 20 int):');
+    read(arr_B[i]);
+
+end.

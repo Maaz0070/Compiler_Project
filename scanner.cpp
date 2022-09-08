@@ -25,21 +25,112 @@ Scanner::Scanner(std::string fileName) {
         exit(1);
     } 
 
+    // sets used for state transitions
     special1char = {'+', '-', '*', '/', ';', '<', '>','(', ')', '[', ']', ',', ';', '"', '{', '}', '^', ':'}; // first
     special2char = {'=', '>'}; // second
     special3char = {">=", "<=", "<>", ".." , ":="}; //   
     invalidchar = {'?', '!'};
 
+    // 
+    lookupKeywords = {
+      {"and","AND"},
+      {"array","ARRAY"},
+      {"asm","ASM"},
+      {"begin","BEGIN"},
+      {"break","BREAK"},
+      {"case","CASE"},
+      {"const","CONST"},
+      {"constructor","CONSTRUCTOR"},
+      {"continue","CONTINUE"},
+      {"destructor","DESTRUCTOR"},
+      {"div","DIV"},
+      {"do","DO"},
+      {"downto","DOWNTO"},
+      {"else","ELSE"},
+      {"end","END"},
+      {"FALSE","FALSE"},
+      {"file","FILE"},
+      {"for","FOR"},
+      {"function","FUNCTION"},
+      {"goto","GOTO"},
+      {"if","IF"},
+      {"implementation","IMPLEMENTATION"},
+      {"in","IN"},
+      {"inline","INLINE"},
+      {"interface","INTERFACE"},
+      {"label","LABEL"},
+      {"mod","MOD"},
+      {"nil","NIL"},
+      {"not","NOT"},
+      {"object","OBJECT"},
+      {"of","OF"},
+      {"on","ON"},
+      {"operator","OPERATOR"},
+      {"or","OR"},
+      {"packed","PACKED"},
+      {"procedure","PROCEDURE"},
+      {"program","PROGRAM"},
+      {"record","RECORD"},
+      {"repeat","REPEAT"},
+      {"set","SET"},
+      {"shl","SHL"},
+      {"shr","SHR"},
+      {"string","STRING"},
+      {"then","THEN"},
+      {"to","TO"},
+      {"TRUE","TRUE"},
+      {"type","TYPE"},
+      {"unit","UNIT"},
+      {"until","UNTIL"},
+      {"uses","USES"},
+      {"var","VAR"},
+      {"while","WHILE"},
+      {"with","WITH"},
+      {"xor","XOR"},
+      {"(integer)","INTEGER"},
+      {"(real number)","REAL"},
+      {"(identifier)","INDENTIFIER"},
+    };
+    lookupOperators = {
+      {"+","PLUSOP"},
+      {"-","MINUSOP"},
+      {"*","MULTOP"},
+      {":", "COLON"},
+      {"/","DIVOP"},
+      {":=","ASSIGN"},
+      {"=","EQUAL"},
+      {"<>","NE"},
+      {"<=","LTEQ"},
+      {">=","GTEQ"},
+      {"<","LT"},
+      {">","GT"},
+      {"..","DOTDOT"},
+      {"+='","PLUSEQUAL"},
+      {"-=","MINUSEQUAL"},
+      {"*=","MULTEQUAL"},
+      {"/=","DIVEQUAL"},
+      {"^","CARAT"},
+      {";","SEMICOLOR"},
+      {".", "PERIOD"},
+      {",","COMMA"},
+      {"(","LPAREN"},
+      {")","RPAREN"},
+      {"[","LBRACKET"},
+      {"]","RBRACKET"},
+      {"{","LBRACE"},
+      {"}","RBRACE"},
+      {"(*","LCOMMENT"},
+      {"*)","RCOMMENT"},
+    };
 
-    lookupKeywords = {"program", "begin", "end", "var", "integer", "real", "procedure", "function", "if", "then", "else", "while", "do", "repeat", "until", "for", "to", "downto", "case", "of", "goto"},
-    lookupOperators = {"+", "-", "*", "/", ":=", "=", "<>", "<", "<=", ">", ">=", "(", ")", "[", "]", ",", ":", ";", ".", "..", };
-    line = 0;
+    line = 1;
     consumingString = false;
     isEOF = false;
     foundOp = false;
 }
 
-void getTokenType(Token& res, int state) {
+// assigns a type a token depending on curState
+void Scanner::getTokenType(Token& res, int state) {
   switch (state) {
       case 0:
         res.type = INVALID;
@@ -66,8 +157,10 @@ void getTokenType(Token& res, int state) {
         res.type = INVALID;
         break;
     }
+  // check if the token is a keyword
 }
 
+// converts a string to lowercase
 std::string toLower(std::string str) {
     std::string res = "";
     for (int i = 0; i < str.length(); i++) {
@@ -76,35 +169,39 @@ std::string toLower(std::string str) {
     return res;
 }
 
+// checks if token label is part of keyword set, creates labels
 void Scanner::look_up(Token& res) {
     res.isKeyword = false;
     if (res.type == WORD) {
-      for(auto keyword : lookupKeywords) {
-        if(keyword == toLower(res.value)){
-            res.label = keyword;
-            res.isKeyword = true;
-            return;
-        }
-      }
-      res.label = "WORD";
-    } else if (res.type==SPECIAL1){
-      for(auto op : lookupOperators) {
-        if(op == res.value){
-            res.label = op;
-            res.isKeyword = true;
-            return;
-        } 
+      if (lookupKeywords.find(toLower(res.value)) != lookupKeywords.end()) {
+        res.label = lookupKeywords[toLower(res.value)];
+        res.isKeyword = true;
+      } else {
+        res.label = "IDENTIFIER";
       }
     } 
-    res.label = "STRING";
+    else if (res.type == SPECIAL1 || res.type == SPECIAL2) {
+      if (lookupOperators.find(res.value) != lookupOperators.end()) {
+        res.label = lookupOperators[res.value];
+      }
+    } else if (res.type == INTEGERS) {
+      res.label = "INTEGER";
+    } else if (res.type == DECIMAL) {
+      res.label = "REAL";
+    } else if (res.type == QUOTES) {
+      res.label = "STRING";
+    } 
+    else if (res.type == INVALID) {
+      res.label = "INVALID";
+    } 
     return;
-
 }
 
 bool isWhitespace(char cur) {
   return cur == ' ' || cur == '\t' || cur == '\n' || cur == '\r' || cur == '\0';
 }
 
+// scans source file for next token and returns it
 Token Scanner::nextToken() {
     char cur = '1';
     int state = 0;
@@ -115,30 +212,41 @@ Token Scanner::nextToken() {
     bool qflag = false;
     bool dflag = false;
 
-
+    // loop until end of file or null character
     while (!file.eof() && cur != '\0') {
       cur = file.get();
+      if (cur == '\n') line++;
       if (cur == EOF) {
+        state = 8; // END STATE
         isEOF = true;
         getTokenType(res, state);
         look_up(res);
+        if (res.value.length() == 0) {
+          res.value = "EOF";
+          res.label = "INVALID";
+        }
         return res;
       }
       getTokenType(res, state);
+      res.line = line;
 
       if (state==0 && isWhitespace(cur)) {
         continue;
       }
+
+      // handles brackets and parenthesis and checks if they are valid
       if (cur == '(' || cur == '[' || cur == '{') {
         opStack.push(cur);
         res.type = SPECIAL1;
         res.value = cur;
+        look_up(res);
         return res;
       }
       if (cur == ')' || cur == ']' || cur == '}') {
         if (opStack.empty()) {
           res.type = INVALID;
           res.value = cur;
+          look_up(res);
           return res;
         }
         char top = opStack.top();
@@ -146,10 +254,12 @@ Token Scanner::nextToken() {
           opStack.pop();
           res.type = SPECIAL1;
           res.value = cur;
+          look_up(res);
           return res;
         } else {
           res.type = INVALID;
           res.value = cur;
+          look_up(res);
           return res;
         }
       }
@@ -158,12 +268,14 @@ Token Scanner::nextToken() {
         qflag = !qflag;
       }
       
+      // handle string literals
       if (special1char.find(cur) != special1char.end() && !qflag) {
         if (cur=='.')foundOp = !foundOp;
         if (foundOp) {
           state = 0;
           if (res.value != "") {
             getTokenType(res, state);
+            look_up(res);
             return res;
           }
           continue;
@@ -190,6 +302,7 @@ Token Scanner::nextToken() {
         cur = tmp;
         res.value = cur;
         getTokenType(res, 4);
+        look_up(res);
         return res;
       }
       
@@ -205,7 +318,6 @@ Token Scanner::nextToken() {
       } 
       else if (state == 0) {
         if (errString.length() > 0) {
-          std::cerr << "TOKEN ERROR at line " << line << ": " << " invalid string"  << errString << std::endl;
           errString = "";
           dflag = !dflag;
         }
@@ -217,8 +329,10 @@ Token Scanner::nextToken() {
       else 
         if (!isWhitespace(cur)) res.value += cur;
     }
+    return res;
 }
 
+// returns encoded FSM transition depending on current character
 int Scanner::getTransition(char input) {
   if (isalpha(input) || input == '_' ) {
     return 0;
@@ -247,6 +361,7 @@ int Scanner::getTransition(char input) {
   }
 }
 
+// generates next state for FSM
 int Scanner::nextState(int curState, char input) {
   int transition = getTransition(input);
 
@@ -339,7 +454,7 @@ int Scanner::nextState(int curState, char input) {
       break;
     // ERROR
     case 7:
-      // QUOTE
+      // INVALID
       if (transition == ALPHA) return 0;
       else if (transition == INTEGER) return 0;
       else if (transition == DEC) return 0;
@@ -350,6 +465,19 @@ int Scanner::nextState(int curState, char input) {
       else if (transition == INVC) return 0;
       else return -1;
       break;
+    case 8:
+      // END STATE
+      if (transition == ALPHA) return 0;
+      else if (transition == INTEGER) return 0;
+      else if (transition == DEC) return 0;
+      else if (transition == SPEC1) return 0;
+      else if (transition == SPEC2) return 0;
+      else if (transition == QUOTE) return 0;
+      else if (transition == SPACE) return 0;
+      else if (transition == INVC) return 0;
+      else return -1;
+      break;
+    // ERROR State
     case -1:
       if (transition == ALPHA) return -1;
       else if (transition == INTEGER) return -1;

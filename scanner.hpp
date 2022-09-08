@@ -4,59 +4,9 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <unordered_map>
 #include <stack>
 
-// enum keyword {
-//     // Reserved words
-//     PROGRAM,
-//     BEGIN,
-//     END,
-//     VAR,
-//     INTEGER,
-//     REAL,
-//     PROCEDURE,
-//     FUNCTION,
-//     IF,
-//     THEN,
-//     ELSE,
-//     WHILE,
-//     DO,
-//     REPEAT,
-//     UNTIL,
-//     FOR,
-//     TO,
-//     DOWNTO,
-//     CASE,
-//     OF,
-//     GOTO,
-//     // Operators
-//     PLUS,
-//     MINUS,
-//     STAR,
-//     SLASH,
-//     ASSIGN,
-//     EQUAL,
-//     NOT_EQUAL,
-//     LESS,
-//     LESS_EQUAL,
-//     GREATER,
-//     GREATER_EQUAL,
-//     LPAREN,
-//     RPAREN,
-//     LBRACK,
-//     RBRACK,
-//     COMMA,
-//     COLON,
-//     SEMICOLON,
-//     PERIOD,
-//     DOTDOT,
-//     // Identifiers
-//     IDENT,
-//     // Constants
-//     INTEGER_CONST,
-//     REAL_CONST,
-//     // Special tokens
-// };
 enum tokenTypes {
     WORD,
     INTEGERS,
@@ -69,12 +19,11 @@ enum tokenTypes {
 
 struct Token {
     std::string value;
-    tokenTypes type;
     std::string label;
+    tokenTypes type;
     bool isKeyword;
+    int line;
 };
-
-
 
 class Scanner {
     private:
@@ -90,8 +39,8 @@ class Scanner {
         std::set<char> special2char;
         std::set<char> invalidchar;
         std::set<std::string> special3char;
-        std::set<std::string> lookupKeywords;
-        std::set<std::string> lookupOperators;
+        std::unordered_map<std::string, std::string> lookupKeywords;
+        std::unordered_map<std::string, std::string> lookupOperators;
         std::stack<char> opStack;
         std::string errString;
 
@@ -100,6 +49,7 @@ class Scanner {
     public:
         Scanner(std::string fileName);
         void look_up(Token& res);
+        void getTokenType(Token& res, int state);
         bool isEOF;
         Token nextToken();
         int getTransition(char input);
