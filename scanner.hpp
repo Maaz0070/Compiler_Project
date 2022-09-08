@@ -84,13 +84,17 @@ class Scanner {
         char currentChar;
         char nextChar;
         bool consumingString;
+        bool foundOp;
         std::vector< std::vector<int> > transitionTable;
         std::set<char> special1char;
         std::set<char> special2char;
+        std::set<char> invalidchar;
         std::set<std::string> special3char;
         std::set<std::string> lookupKeywords;
         std::set<std::string> lookupOperators;
         std::stack<char> opStack;
+        std::string errString;
+
         
     
     public:

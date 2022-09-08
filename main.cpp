@@ -3,7 +3,10 @@
 #include "scanner.hpp"
 
 void printTok(Token tok) {
-    std::cout << std::setw(60) << std::left << tok.value  << std::setfill(' ');
+    std::cout << std::setw(60); 
+    std::cout << std::left;
+    std::cout << tok.value;
+    std::cout << std::setfill(' ');
     std::cout << std::setw(20);
     if (tok.type == WORD) {
         std::cout << " WORD";
@@ -29,12 +32,16 @@ void printTok(Token tok) {
 //masterTestCase.txt
 int main() {
     Scanner scanner("masterTestCase.txt");
+    Token tokens[100];
+    int i = 0;
 
     Token token = scanner.nextToken();
     int width = 60;
     std::cout << "Token" << std::setw(width) << std::setfill(' ') << "TokenType" << std::setw(20) << std::setfill(' ') << "Label" << std::endl;
     while (!scanner.isEOF) {
         printTok(token);
+        tokens[i] = token;
+        i++;
         std::cout << std::endl;
         token = scanner.nextToken();
     }
