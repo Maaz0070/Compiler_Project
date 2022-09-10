@@ -1,4 +1,5 @@
 #include <iostream>
+const int max = 100;
 
 class Node {
     std::string token;
@@ -18,19 +19,22 @@ class Node {
         type = type;
         line = line;
     }
+
+    friend class symbolTable;
 };
 
 class symbolTable {
     public:
     symbolTable(){}
     int hashFunction(std::string token);
-    std::string look_up(std::string token);
+    Node* look_up(std::string token);
     bool insert(std::string token,
                 std::string scope, 
                 std::string type,
                 int line);
 
     private:
-    const int maxSize = 100;
+    int maxSize = max;
+    Node* head[max];
     
 };

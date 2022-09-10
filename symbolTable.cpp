@@ -10,6 +10,19 @@ int symbolTable::hashFunction(std::string token) {
     return asc % symbolTable::maxSize;
 }
 
-std::string symbolTable::look_up(std::string token) {
+Node* symbolTable::look_up(std::string token) {
     int hash = hashFunction(token);
+    Node *n = head[hash];
+
+    while(n != NULL) {
+        //loop through nodes
+        if(n->token == token) {
+            return n;
+        }
+        else {
+            return 0;
+        }
+
+    }
 }
+
