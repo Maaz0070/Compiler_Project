@@ -1,22 +1,17 @@
-program P2 ;
-var 
-    i : integer ;
+Test kit
+begin begins BEGIN Begin BeGiN 
+''
+'Hello, world.'
+''
+'C' 'B' ''
 
-be
 
- integer;         
-    len_A, len_B, i, n:integer;
-
-begin
-    
-
-    i := 1;
-    
-          e of array A
-
-    i := 1;
-
-    writeln('Please input the second list of integer (MAX: 20 int):');
-    read(arr_B[i]);
-
-end.
++ - * / := . , ; : = <> < <= >= > ( ) [ ] { } } ^ ..
++-:=<>=<==))
+]
+1213 43213 
+2314.3123
+3214.123131.123
+3.14.1
+Testing?
+PLEASE!

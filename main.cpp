@@ -20,7 +20,8 @@ void printTok(Token tok, std::ostream& os) {
 //masterTestCase.txt
 int main() {
     Scanner scanner("masterTestCase.txt");
-    std::ofstream os("scannerOutput.txt");
+    // Scanner scanner("test-in.txt");
+    std::ofstream os("test-out.txt");
     Token token = scanner.nextToken();
     while (!scanner.isEOF) {
         printTok(token, os);

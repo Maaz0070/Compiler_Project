@@ -321,9 +321,11 @@ Token Scanner::nextToken() {
           errString = "";
           dflag = !dflag;
         }
-        if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end())) res.value += cur;
+        if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end()))
+          res.value += cur;
+        if (invalidchar.find(cur) != invalidchar.end())
+          file.unget();
         look_up(res);
-        file.putback(cur);
         return res; 
       }
       else 
