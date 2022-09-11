@@ -236,6 +236,12 @@ Token Scanner::nextToken() {
 
       // handles brackets and parenthesis and checks if they are valid
       if (cur == '(' || cur == '[' || cur == '{') {
+        if (res.value.length()>0) {
+          file.unget();
+          getTokenType(res, state);
+          look_up(res);
+          return res;
+        }
         opStack.push(cur);
         res.type = SPECIAL1;
         res.value = cur;
@@ -266,11 +272,26 @@ Token Scanner::nextToken() {
 
       if (cur == '\''){
         qflag = !qflag;
+        if (!qflag) {
+          res.value += '\'';
+          getTokenType(res, state);
+          look_up(res);
+          return res;
+        }
       }
       
       // handle string literals
       if (special1char.find(cur) != special1char.end() && !qflag) {
-        if (cur=='.')foundOp = !foundOp;
+        if (res.value.length() > 0) {
+          file.putback(cur);
+          getTokenType(res, state);
+          look_up(res);
+          return res;
+        }
+
+        if (cur=='.') {
+          foundOp = !foundOp;
+        }
         if (foundOp) {
           state = 0;
           if (res.value != "") {
@@ -321,10 +342,9 @@ Token Scanner::nextToken() {
           errString = "";
           dflag = !dflag;
         }
-        if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end()))
-          res.value += cur;
+        if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end())) res.value += cur;
         if (invalidchar.find(cur) != invalidchar.end())
-          file.unget();
+          file.putback(cur);
         look_up(res);
         return res; 
       }
