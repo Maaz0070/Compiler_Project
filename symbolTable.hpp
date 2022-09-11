@@ -2,11 +2,11 @@
 const int max = 100;
 
 class Node {
+    //name, type, size, dimension, line of Decleration, line of usage, address
     std::string token;
     std::string type;
     std::string scope;
     int line;
-    //name, type, size, dimension, line of Decleration, line of usage, address
     Node *next;
 
     public:
@@ -14,10 +14,10 @@ class Node {
         next = NULL;
     }
     Node(std::string token, std::string scope, std::string type, int line) {
-        token = token;
-        scope = scope;
-        type = type;
-        line = line;
+        this->token = token;
+        this->scope = scope;
+        this->type = type;
+        this->line = line;
     }
 
     friend class symbolTable;
@@ -25,13 +25,14 @@ class Node {
 
 class symbolTable {
     public:
-    symbolTable(){}
+    symbolTable();
     int hashFunction(std::string token);
     Node* look_up(std::string token);
-    bool insert(std::string token,
+    void insert(std::string token,
                 std::string scope, 
                 std::string type,
                 int line);
+    void deleteNode(std::string token);
 
     private:
     int maxSize = max;
