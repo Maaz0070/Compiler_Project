@@ -5,7 +5,7 @@ IDENTIFIER          :   begins
 BEGIN               :   BEGIN                                                       
 BEGIN               :   Begin                                                       
 BEGIN               :   BeGiN                                                       
-STRING              :   'Hello,world.'                                              
+STRING              :   'Hello, world.'                                             
 STRING              :   ''                                                          
 STRING              :   'A'                                                         
 STRING              :   'B'                                                         
@@ -47,11 +47,11 @@ INTEGER             :   1
 INTEGER             :   20                                                          
 INTEGER             :   31415926                                                    
 INTEGER             :   1                                                           
-TOKEN ERROR at line 14:  invalid string '3.14.1'
+TOKEN ERROR at line 13:  invalid string '3.14.1'
 INVALID             :   3.14.1                                                      
 IDENTIFIER          :   HUH                                                         
-TOKEN ERROR at line 15:  invalid string '?'
+TOKEN ERROR at line 14:  invalid string '?'
 INVALID             :   ?                                                           
 IDENTIFIER          :   PLEASE                                                      
-TOKEN ERROR at line 16:  invalid string '!'
+TOKEN ERROR at line 15:  invalid string '!'
 INVALID             :   !                                                           

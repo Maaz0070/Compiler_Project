@@ -249,6 +249,12 @@ Token Scanner::nextToken() {
         return res;
       }
       if (cur == ')' || cur == ']' || cur == '}') {
+        if (res.value.length()>0) {
+          file.unget();
+          getTokenType(res, state);
+          look_up(res);
+          return res;
+        }
         if (opStack.empty()) {
           res.type = INVALID;
           res.value = cur;
@@ -349,7 +355,8 @@ Token Scanner::nextToken() {
         return res; 
       }
       else 
-        if (!isWhitespace(cur)) res.value += cur;
+        if (qflag || !isWhitespace(cur))
+          res.value += cur;
     }
     return res;
 }
