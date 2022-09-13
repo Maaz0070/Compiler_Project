@@ -13,7 +13,7 @@ int symbolTable::hashFunction(std::string token) {
         asc = asc + token[i];
     }
 
-    return asc % symbolTable::maxSize;
+    return asc % max;
 }
 
 Node* symbolTable::look_up(std::string token) {
@@ -25,16 +25,15 @@ Node* symbolTable::look_up(std::string token) {
         if(ptr->token == token) {
             return ptr;
         }
-        else {
-            return 0;
-        }
 
+        ptr = ptr->next;
     }
+    return &Node();
 }
 
-void symbolTable::insert(std::string token, std::string scoptre, std::string typtre, int line) {
+void symbolTable::insert(std::string token, std::string scope, std::string type, int line) {
     int hash = hashFunction(token);
-    Node *n = new Node(token, scoptre, typtre, line);
+    Node *n = new Node(token, scope, type, line);
 
     if(head[hash] == NULL) {
         head[hash] = n;
@@ -67,7 +66,7 @@ void symbolTable::deleteNode(std::string token) {
         ptr = tmp->next;
     }
 
-    if(ptr->token == token && ptr->next !- NULL) {
+    if(ptr->token == token && ptr->next != NULL) {
         tmp->next = ptr->next;
         ptr->next = NULL;
         delete ptr;
