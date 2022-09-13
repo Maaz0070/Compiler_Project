@@ -3,7 +3,7 @@
 #include <vector>
 #include <stack>
 
-parseTree::parseTree(std::string) {
+parseTree::parseTree(std::string token) {
     this->token = token;
     this->leftChild = NULL;
     this->rightChild = NULL;
@@ -39,15 +39,10 @@ parseTree *parseTree::parseProgram(std::string exp) {
             stack.pop();
         }
         else if(find(vect1.begin(), vect1.end(), list[i]) == vect1.end()) {
-            try {
-                curr->setToken(list[i]);
-                parseTree *root = stack.top();
-                stack.pop();
-                curr = root;
-            }
-            catch(std::string ValueError) {
-                std::cerr << "token " << list[i] << " is not a valid integer"<<std::endl;
-            }
+            curr->setToken(list[i]);
+            parseTree *root = stack.top();
+            stack.pop();
+            curr = root;
         }
     }
     return head;
