@@ -6,23 +6,23 @@ symbolTable::symbolTable(){
     }
 }
 
-int symbolTable::hashFunction(std::string token) {
+int symbolTable::hashFunction(std::string id) {
     int asc = 0;
 
-    for(int i = 0; i < token.length(); i++) {
-        asc = asc + token[i];
+    for(int i = 0; i < id.length(); i++) {
+        asc = asc + id[i];
     }
 
     return asc % max;
 }
 
-Node* symbolTable::look_up(std::string token) {
-    int hash = hashFunction(token);
+Node* symbolTable::look_up(std::string id) {
+    int hash = hashFunction(id);
     Node *ptr = head[hash];
 
     while(ptr != NULL) {
         //looptr through nodes
-        if(ptr->token == token) {
+        if(ptr->id == id) {
             return ptr;
         }
 
@@ -31,9 +31,9 @@ Node* symbolTable::look_up(std::string token) {
     return &Node();
 }
 
-void symbolTable::insert(std::string token, std::string scope, std::string type, int line) {
-    int hash = hashFunction(token);
-    Node *n = new Node(token, scope, type, line);
+void symbolTable::insert(std::string id, std::string scope, std::string type, int line) {
+    int hash = hashFunction(id);
+    Node *n = new Node(id, scope, type, line);
 
     if(head[hash] == NULL) {
         head[hash] = n;
@@ -47,26 +47,26 @@ void symbolTable::insert(std::string token, std::string scope, std::string type,
     }
 }
 
-void symbolTable::deleteNode(std::string token) {
-    int hash = hashFunction(token);
+void symbolTable::deleteNode(std::string id) {
+    int hash = hashFunction(id);
     Node *ptr = head[hash];
     Node *tmp = head[hash];
 
     if(ptr == NULL) {
-        std::cout << "Token doesn't exist";
+        std::cout << "id doesn't exist";
     }
 
-    if(ptr->token == token && ptr->next == NULL) {
+    if(ptr->id == id && ptr->next == NULL) {
         ptr->next = NULL;
         delete ptr;
     }
 
-    while(ptr->token != token && ptr->next != NULL) {
+    while(ptr->id != id && ptr->next != NULL) {
         tmp = ptr;
         ptr = tmp->next;
     }
 
-    if(ptr->token == token && ptr->next != NULL) {
+    if(ptr->id == id && ptr->next != NULL) {
         tmp->next = ptr->next;
         ptr->next = NULL;
         delete ptr;
@@ -76,7 +76,7 @@ void symbolTable::deleteNode(std::string token) {
         ptr->next = NULL;
         delete ptr;
     }
-    std::cout << "Token doesn't exist";
+    std::cout << "id doesn't exist";
 
 }
 

@@ -3,13 +3,13 @@
 #include <vector>
 #include <stack>
 
-parseTree::parseTree(std::string token) {
-    this->token = token;
+parseTree::parseTree(std::string id) {
+    this->id = id;
     this->leftChild = NULL;
     this->rightChild = NULL;
 }
 
-parseTree *parseTree::parseProgram(std::string exp) {
+parseTree *parseTree::parseStatement(std::string exp) {
     std::vector<char*> list;
     for(int i = 0; exp.length(); i++) {
         list.push_back(&exp[i]);
@@ -23,13 +23,14 @@ parseTree *parseTree::parseProgram(std::string exp) {
     parseTree *curr = head;
     
     for(int i = 0; i < list.size(); i++) {
+        std::string currChar(list[i]);
         if(list[i] == "(") {
             curr->insertLeft("");
             stack.push(curr);
             curr = curr->getLeftChild();
         }
-        else if(find(vect.begin(), vect.end(), list[i]) != vect.end()) {
-            curr->setToken(list[i]);
+        else if(find(vect.begin(), vect.end(), currChar) != vect.end()) {
+            curr->setId(list[i]);
             curr->insertRight("");
             stack.push(curr);
             curr = curr->getRightChild();
@@ -39,7 +40,7 @@ parseTree *parseTree::parseProgram(std::string exp) {
             stack.pop();
         }
         else if(find(vect1.begin(), vect1.end(), list[i]) == vect1.end()) {
-            curr->setToken(list[i]);
+            curr->setId(list[i]);
             parseTree *root = stack.top();
             stack.pop();
             curr = root;
@@ -48,23 +49,23 @@ parseTree *parseTree::parseProgram(std::string exp) {
     return head;
 }
 
-void parseTree::insertLeft(std::string newToken) {
+void parseTree::insertLeft(std::string newId) {
     if(this->leftChild == NULL) {
-        this->leftChild = new parseTree(newToken);
+        this->leftChild = new parseTree(newId);
     }
     else {
-        parseTree *n = new parseTree(newToken);
+        parseTree *n = new parseTree(newId);
         n->leftChild = this->leftChild;
         this->leftChild = n;
     }
 }
 
-void parseTree::insertRight(std::string newToken) {
+void parseTree::insertRight(std::string newId) {
     if(this->rightChild == NULL) {
-        this->rightChild = new parseTree(newToken);
+        this->rightChild = new parseTree(newId);
     }
     else {
-        parseTree *n = new parseTree(newToken);
+        parseTree *n = new parseTree(newId);
         n->rightChild = this->rightChild;
         this->rightChild = n;
     }
@@ -78,10 +79,10 @@ parseTree *parseTree::getLeftChild() {
     return this->leftChild;
 }
 
-void parseTree::setToken(std::string token) {
-    this->token = token;
+void parseTree::setId(std::string id) {
+    this->id = id;
 }
 
-std::string parseTree::getToken() {
-    return this->token;
+std::string parseTree::getId() {
+    return this->id;
 }

@@ -3,7 +3,7 @@ const int max = 100;
 
 class Node {
     //name, type, size, dimension, line of Decleration, line of usage, address
-    std::string token;
+    std::string id;
     std::string type;
     std::string scope;
     int line;
@@ -13,8 +13,8 @@ class Node {
     Node() {
         next = NULL;
     }
-    Node(std::string token, std::string scope, std::string type, int line) {
-        this->token = token;
+    Node(std::string id, std::string scope, std::string type, int line) {
+        this->id = id;
         this->scope = scope;
         this->type = type;
         this->line = line;
@@ -26,13 +26,13 @@ class Node {
 class symbolTable {
     public:
     symbolTable();
-    int hashFunction(std::string token);
-    Node* look_up(std::string token);
-    void insert(std::string token,
+    int hashFunction(std::string id);
+    Node* look_up(std::string id);
+    void insert(std::string id,
                 std::string scope, 
                 std::string type,
                 int line);
-    void deleteNode(std::string token);
+    void deleteNode(std::string id);
 
     private:
     int maxSize = max;
