@@ -11,6 +11,8 @@
 #define SPACE 6
 #define INVC 7
 
+Scanner::Scanner() {
+}
 
 Scanner::Scanner(std::string fileName) {
 /*
@@ -205,6 +207,7 @@ bool isWhitespace(char cur) {
 Token Scanner::nextToken() {
     char cur = '1';
     int state = 0;
+    int prevState = 0;
     std::string tmpString = "";
     Token res;
     res.value = "";
@@ -217,9 +220,10 @@ Token Scanner::nextToken() {
       cur = file.get();
       if (cur == '\n') line++;
       if (cur == EOF) {
+        prevState = state;
         state = 8; // END STATE
         isEOF = true;
-        getTokenType(res, state);
+        getTokenType(res, prevState);
         look_up(res);
         if (res.value.length() == 0) {
           res.value = "EOF";
@@ -333,9 +337,19 @@ Token Scanner::nextToken() {
         return res;
       }
       
-
+      prevState = state;
       state = nextState(state, cur);
+
       if (state == 3 && cur == '.') {
+        char tmpnext = file.get(); // check for dotdot
+        if (tmpnext == '.') {
+          getTokenType(res, 2);
+          look_up(res);
+          file.putback('.');
+          file.putback('.');
+          return res;
+        }
+        file.unget();
         dflag = true;
         res.value += cur;
       }
@@ -343,14 +357,16 @@ Token Scanner::nextToken() {
         res.value += cur;
         errString = res.value;
       } 
-      else if (state == 0) {
+      else if (state == 0 || state == 8) {
         if (errString.length() > 0) {
           errString = "";
           dflag = !dflag;
         }
-        if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end())) res.value += cur;
-        if (invalidchar.find(cur) != invalidchar.end())
-          file.putback(cur);
+        //if (!isWhitespace(cur) && !(invalidchar.find(cur) != invalidchar.end())) res.value += cur;
+        file.unget();
+        // if (invalidchar.find(cur) != invalidchar.end())
+        //   file.putback(cur);
+        getTokenType(res, prevState);
         look_up(res);
         return res; 
       }
@@ -449,7 +465,7 @@ int Scanner::nextState(int curState, char input) {
       // SPECIAL1
       if (transition == ALPHA) return 0;
       else if (transition == INTEGER) return 0;
-      else if (transition == DEC) return 0;
+      else if (transition == DEC) return 4;
       else if (transition == SPEC1) return 0;
       else if (transition == SPEC2) return 5;
       else if (transition == QUOTE) return 0;

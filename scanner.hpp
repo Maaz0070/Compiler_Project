@@ -47,6 +47,7 @@ class Scanner {
         
     
     public:
+        Scanner();
         Scanner(std::string fileName);
         void look_up(Token& res);
         void getTokenType(Token& res, int state);

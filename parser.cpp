@@ -1,14 +1,21 @@
-#include "parseTree.hpp"
-#include <string>
-#include <vector>
-#include <stack>
+#include "parser.hpp"
 
-parseTree::parseTree(NodeType type) {
-    this->type = type;
-    this->name = "";
-    this->value = 0;
-    this->parent = NULL;
-    this->children = {};
+Parser::Parser() {
+  scanner = Scanner("masterTestCase.txt");
+}
+
+Parser::Parser(std::string filename) {
+  scanner = Scanner(filename);
+}
+
+parseTree *Parser::parseProgram() {
+    parseTree *head = new parseTree(NodeType::PROGRAM);
+    
+    Token tok = scanner.nextToken();
+
+
+
+    return head;
 }
 
 // parseTree *parseTree::parseStatement(std::string exp) {
@@ -49,42 +56,4 @@ parseTree::parseTree(NodeType type) {
 //         }
 //     }
 //     return head;
-// }
-
-// void parseTree::insertLeft(std::string newId) {
-//     if(this->leftChild == NULL) {
-//         this->leftChild = new parseTree(newId);
-//     }
-//     else {
-//         parseTree *n = new parseTree(newId);
-//         n->leftChild = this->leftChild;
-//         this->leftChild = n;
-//     }
-// }
-
-// void parseTree::insertRight(std::string newId) {
-//     if(this->rightChild == NULL) {
-//         this->rightChild = new parseTree(newId);
-//     }
-//     else {
-//         parseTree *n = new parseTree(newId);
-//         n->rightChild = this->rightChild;
-//         this->rightChild = n;
-//     }
-// }
-
-// parseTree *parseTree::getRightChild() {
-//     return this->rightChild;
-// }
-
-// parseTree *parseTree::getLeftChild() {
-//     return this->leftChild;
-// }
-
-// void parseTree::setId(std::string id) {
-//     this->id = id;
-// }
-
-// std::string parseTree::getId() {
-//     return this->id;
 // }

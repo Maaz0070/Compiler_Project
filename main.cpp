@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include "scanner.hpp"
+#include "parser.hpp"
 
 // prints label and token
 void printTok(Token tok, std::ostream& os) {
@@ -19,7 +20,7 @@ void printTok(Token tok, std::ostream& os) {
 
 //masterTestCase.txt
 int main() {
-    Scanner scanner("masterTestCase.txt");
+    Scanner scanner("t.txt");
     // Scanner scanner("test-in.txt");
     std::ofstream os("test-out.txt");
     Token token = scanner.nextToken();

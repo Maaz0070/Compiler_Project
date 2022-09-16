@@ -1,11 +1,11 @@
-procedure Print(var arr: array of integer; len: integer);
-var
-    i: integer;
-begin
-    for i:=0 to len-1 do
-    begin
-        write(arr[i]);
-        write(' ');
+Uses sysutils;
+type
+    President = record
+        start_year: integer;
+        end_year: integer;
+        first_name: string;
+        mid_initials: string;
+        last_name: string;
     end;
-    writeln();
-end;
+    pres_arr = array[0..19] of President;
+    int_arr = array[0..19] of integer;`
