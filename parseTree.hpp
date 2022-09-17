@@ -35,8 +35,8 @@ class parseTree {
     int getValue();
     void setParent(parseTree *parent);
     parseTree *getParent();
-    void addChild(parseTree *child);
-    parseTree *getChildren();
+    void adopt(parseTree *child);
+    std::vector<parseTree *> getChildren();
 
     private:
     NodeType type;

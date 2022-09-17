@@ -1,3 +1,6 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -56,3 +59,5 @@ class Scanner {
         int getTransition(char input);
         int nextState(int curState, char input);
 };
+
+#endif

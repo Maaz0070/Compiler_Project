@@ -1,5 +1,5 @@
 CC=g++
-output: main.o scanner.o
+output: main.o scanner.o parser.o
 	$(CC) -g main.o scanner.o parser.o -o output
 
 main.o: main.cpp

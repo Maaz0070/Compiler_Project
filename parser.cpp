@@ -12,10 +12,56 @@ parseTree *Parser::parseProgram() {
     parseTree *head = new parseTree(NodeType::PROGRAM);
     
     Token tok = scanner.nextToken();
+    if (tok.label == "PROGRAM") {
+        tok = scanner.nextToken();
+        if (tok.label == "IDENTIFIER") {
+          head->setName(tok.value);
+        } else {
+          return NULL; // SYNTAX ERROR
+        }
+        tok = scanner.nextToken();
+        if (tok.label != "LPAREN") {
+          return NULL; // SYNTAX ERROR
+        }
+        while (tok.label != "RPAREN") {
+          tok = scanner.nextToken();
+          if (tok.label != "IDENTIFIER") {
+            return NULL; // SYNTAX ERROR
+          }
+          tok = scanner.nextToken();
+          if (tok.label == "RPAREN") {
+            break;
+          } else if (tok.label != "COMMA") {
+            return NULL; // SYNTAX ERROR
+          }
+        }
+        if (tok.label == "SEMICOLON") {
+            head->adopt(parseCompoundStatement());
+            tok = scanner.nextToken();
+            if (tok.label == "DOT") {
+                return head;
+            }
+        }
+    }
 
+    return NULL; // SYNTAX ERROR SOMEWHERE
+}
 
-
-    return head;
+parseTree *Parser::parseCompoundStatement() {
+    parseTree *head = new parseTree(NodeType::COMPOUND);
+    Token tok = scanner.nextToken();
+    if (tok.label == "BEGIN") {
+        head->adopt(parseStatement());
+        tok = scanner.nextToken();
+        while (tok.label == "SEMICOLON") {
+            head->adopt(parseStatement());
+            tok = scanner.nextToken();
+        }
+        if (tok.label == "END") {
+            return head;
+        }
+    }
+    return NULL; // SYNTAX ERROR SOMEWHERE
 }
 
 // parseTree *parseTree::parseStatement(std::string exp) {

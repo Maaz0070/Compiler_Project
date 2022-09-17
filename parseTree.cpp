@@ -11,6 +11,38 @@ parseTree::parseTree(NodeType type) {
     this->children = {};
 }
 
+void parseTree::setName(std::string name) {
+    this->name = name;
+}
+std::string parseTree::getName() {
+    return this->name;
+}
+void parseTree::setType(NodeType type) {
+    this->type = type;
+}
+NodeType parseTree::getType() {
+    return this->type;
+}
+void parseTree::setValue(int val) {
+    this->value = val;
+}
+int parseTree::getValue() {
+    return this->value;
+}
+void parseTree::setParent(parseTree *parent) {
+    this->parent = parent;
+}
+parseTree *parseTree::getParent() {
+    return this->parent;
+}
+void parseTree::adopt(parseTree *child) {
+    this->children.push_back(child);
+    child->setParent(this);
+}
+std::vector<parseTree *> parseTree::getChildren() {
+    return this->children;
+}
+
 // parseTree *parseTree::parseStatement(std::string exp) {
 //     std::vector<char*> list;
 //     for(int i = 0; exp.length(); i++) {
