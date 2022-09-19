@@ -32,8 +32,9 @@ int main() {
     // printTok(token, os);
     // std::cout << std::endl;
     // os.close();
-    Parser parser("masterTestCase.txt");
-    parseTree *head = parser.parseProgram();
+    std::cout << "Hello World!" << std::endl;
+    Parser parser("t.txt");
+    Node *head = parser.parseCompoundStatement();
 
     return 0;
 }

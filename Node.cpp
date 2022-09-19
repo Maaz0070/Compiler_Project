@@ -1,60 +1,60 @@
-#include "parseTree.hpp"
+#include "Node.hpp"
 #include <string>
 #include <vector>
 #include <stack>
 
-parseTree::parseTree(NodeType type) {
-    this->type = type;
-    this->name = "";
-    this->value = 0;
-    this->parent = NULL;
-    this->children = {};
+Node::Node(NodeType ty) {
+    type = ty;
+    name = "";
+    value = 0;
+    parent = NULL;
+    children = {};
 }
 
-void parseTree::setName(std::string name) {
-    this->name = name;
+void Node::setName(std::string newName) {
+    name = newName;
 }
-std::string parseTree::getName() {
-    return this->name;
+std::string Node::getName() {
+    return name;
 }
-void parseTree::setType(NodeType type) {
-    this->type = type;
+void Node::setType(NodeType newType) {
+    type = newType;
 }
-NodeType parseTree::getType() {
-    return this->type;
+NodeType Node::getType() {
+    return type;
 }
-void parseTree::setValue(int val) {
-    this->value = val;
+void Node::setValue(int newVal) {
+    value = newVal;
 }
-int parseTree::getValue() {
-    return this->value;
+int Node::getValue() {
+    return value;
 }
-void parseTree::setParent(parseTree *parent) {
-    this->parent = parent;
+void Node::setParent(Node *par) {
+    parent = par;
 }
-parseTree *parseTree::getParent() {
-    return this->parent;
+Node *Node::getParent() {
+    return parent;
 }
-void parseTree::adopt(parseTree *child) {
-    this->children.push_back(child);
-    child->setParent(this);
+void Node::adopt(Node *newChild) {
+    children.push_back(newChild);
+    newChild->setParent(this);
 }
-std::vector<parseTree *> parseTree::getChildren() {
-    return this->children;
+std::vector<Node *> Node::getChildren() {
+    return children;
 }
 
-// parseTree *parseTree::parseStatement(std::string exp) {
+// Node *Node::parseStatement(std::string exp) {
 //     std::vector<char*> list;
 //     for(int i = 0; exp.length(); i++) {
 //         list.push_back(&exp[i]);
 //     }
-//     std::stack<parseTree*> stack;
-//     parseTree *head = new parseTree("");
+//     std::stack<Node*> stack;
+//     Node *head = new Node("");
 //     std::vector<std::string> vect{"+", "-", "*", "/"};
 //     std::vector<std::string> vect1{"+", "-", "*", "/", ")"};
 
 //     stack.push(head);
-//     parseTree *curr = head;
+//     Node *curr = head;
     
 //     for(int i = 0; i < list.size(); i++) {
 //         std::string currChar(list[i]);
@@ -75,7 +75,7 @@ std::vector<parseTree *> parseTree::getChildren() {
 //         }
 //         else if(find(vect1.begin(), vect1.end(), list[i]) == vect1.end()) {
 //             curr->setId(list[i]);
-//             parseTree *root = stack.top();
+//             Node *root = stack.top();
 //             stack.pop();
 //             curr = root;
 //         }
@@ -83,40 +83,40 @@ std::vector<parseTree *> parseTree::getChildren() {
 //     return head;
 // }
 
-// void parseTree::insertLeft(std::string newId) {
+// void Node::insertLeft(std::string newId) {
 //     if(this->leftChild == NULL) {
-//         this->leftChild = new parseTree(newId);
+//         this->leftChild = new Node(newId);
 //     }
 //     else {
-//         parseTree *n = new parseTree(newId);
+//         Node *n = new Node(newId);
 //         n->leftChild = this->leftChild;
 //         this->leftChild = n;
 //     }
 // }
 
-// void parseTree::insertRight(std::string newId) {
+// void Node::insertRight(std::string newId) {
 //     if(this->rightChild == NULL) {
-//         this->rightChild = new parseTree(newId);
+//         this->rightChild = new Node(newId);
 //     }
 //     else {
-//         parseTree *n = new parseTree(newId);
+//         Node *n = new Node(newId);
 //         n->rightChild = this->rightChild;
 //         this->rightChild = n;
 //     }
 // }
 
-// parseTree *parseTree::getRightChild() {
+// Node *Node::getRightChild() {
 //     return this->rightChild;
 // }
 
-// parseTree *parseTree::getLeftChild() {
+// Node *Node::getLeftChild() {
 //     return this->leftChild;
 // }
 
-// void parseTree::setId(std::string id) {
+// void Node::setId(std::string id) {
 //     this->id = id;
 // }
 
-// std::string parseTree::getId() {
+// std::string Node::getId() {
 //     return this->id;
 // }

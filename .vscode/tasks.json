@@ -21,6 +21,15 @@
         "cwd": "${fileDirname}"
       }
     }
+    // {
+    //   "type": "cppbuild",
+    //   "label": "C/C++: make",
+    //   "command": "/usr/bin/g++",
+    //   "args": ["-o", "output", "*.cpp", "-std=c++17"],
+    //   "options": {
+    //     "cwd": "${workspaceFolder}"
+    //   }
+    // }
   ],
   "version": "2.0.0"
 }

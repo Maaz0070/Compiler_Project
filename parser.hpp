@@ -1,26 +1,28 @@
-#include "parseTree.hpp"
+#include "Node.hpp"
 #include "scanner.hpp"
 
 class Parser {
-private:
+  private:
     Scanner scanner;
-public:
+    Node *curNode;
+  public:
     Parser();
     Parser(std::string filename="masterTestCase.txt");
     ~Parser();
-    parseTree *parseProgram();
-    parseTree *parseStatement();
-    // parseTree *parseAssignmentStatement();
-    parseTree *parseCompoundStatement();
-    // parseTree parseRepeatStatement();
-    // parseTree parseWriteStatement();
-    // parseTree parseWritelnStatement();
-    // parseTree parseExpression();
-    // parseTree parseSimpleExpression();
-    // parseTree parseTerm();
-    // parseTree parseFactor();
-    // parseTree parseVariable();
-    // parseTree parseIntegerConstant();
-    // parseTree parseRealConstant();
-    // parseTree parseStringConstant();
+    Node *parseProgram();
+    Node *parseStatement();
+    Node *parseStatementList();
+    Node *parseAssignmentStatement();
+    Node *parseCompoundStatement();
+    // Node parseRepeatStatement();
+    // Node parseWriteStatement();
+    // Node parseWritelnStatement();
+    Node *parseExpression();
+    Node *parseSimpleExpression();
+    Node *parseTerm();
+    Node *parseFactor();
+    // Node parseVariable();
+    Node *parseIntegerConstant();
+    // Node parseRealConstant();
+    // Node parseStringConstant();
 };

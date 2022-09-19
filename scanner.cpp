@@ -112,7 +112,7 @@ Scanner::Scanner(std::string fileName) {
       {"*=","MULTEQUAL"},
       {"/=","DIVEQUAL"},
       {"^","CARAT"},
-      {";","SEMICOLOR"},
+      {";","SEMICOLON"},
       {".", "PERIOD"},
       {",","COMMA"},
       {"(","LPAREN"},

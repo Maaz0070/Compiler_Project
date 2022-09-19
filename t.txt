@@ -1,11 +1,5 @@
-Uses sysutils;
-type
-    President = record
-        start_year: integer;
-        end_year: integer;
-        first_name: string;
-        mid_initials: string;
-        last_name: string;
-    end;
-    pres_arr = array[0..19] of President;
-    int_arr = array[0..19] of integer;`
+BEGIN
+    alpha  := 88;
+    beta   := 99;
+    result := 5
+END
