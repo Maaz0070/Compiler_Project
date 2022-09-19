@@ -202,3 +202,25 @@ Node *Parser::parseIntegerConstant() {
 //     }
 //     return head;
 // }
+
+void Parser::outputTree(Node *node, int indentLevel) {
+    std::string prefix = "";
+    if (node == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < indentLevel; i++) {
+        prefix += "  ";
+    }
+
+    if (node->getChildren().size() == 0) {
+      std::cout << prefix << "<" << node->getTypeString() << "/>" << std::endl;
+      return;
+    }
+
+    std::cout << prefix << "<" << node->getTypeString() << ">" << std::endl;
+    for (int i = 0; i < node->getChildren().size(); i++) {
+        outputTree(node->getChildren()[i], indentLevel + 1);
+    }
+    std::cout << prefix << "<" << node->getTypeString() << "/>" << std::endl;
+}

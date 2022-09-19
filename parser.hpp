@@ -25,4 +25,6 @@ class Parser {
     Node *parseIntegerConstant();
     // Node parseRealConstant();
     // Node parseStringConstant();
+
+    void outputTree(Node *node, int indentLevel=0); 
 };

@@ -23,6 +23,33 @@ void Node::setType(NodeType newType) {
 NodeType Node::getType() {
     return type;
 }
+
+std::string Node::getTypeString() {
+    switch (type) {
+        case NodeType::PROGRAM:
+            return "PROGRAM";
+            break;
+        case NodeType::COMPOUND:
+            return "COMPOUND";
+            break;
+        case NodeType::ASSIGN: 
+            return "ASSIGN";
+            break;
+        case NodeType::LOOP:
+            return "LOOP";
+            break;
+        case NodeType::VARIABLE:
+            return "VARIABLE";
+            break;
+        case NodeType::INTEGER_CONSTANT:
+            return "INTEGER_CONSTANT";
+            break;
+        default:
+            return "UNKNOWN";
+            break;
+    }
+}
+
 void Node::setValue(int newVal) {
     value = newVal;
 }

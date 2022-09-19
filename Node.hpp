@@ -31,6 +31,7 @@ class Node {
         std::string getName();
         void setType(NodeType type);
         NodeType getType();
+        std::string getTypeString();
         void setValue(int val);
         int getValue();
         void setParent(Node *parent);

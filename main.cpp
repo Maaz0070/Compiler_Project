@@ -36,5 +36,7 @@ int main() {
     Parser parser("t.txt");
     Node *head = parser.parseCompoundStatement();
 
+    parser.outputTree(head);
+
     return 0;
 }
