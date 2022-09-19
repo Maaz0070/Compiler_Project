@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include "scanner.hpp"
-#include "parser.hpp"
+#include "./scanner/scanner.hpp"
+#include "./parser/parser.hpp"
 
 // prints label and token
 void printTok(Token tok, std::ostream& os) {
@@ -33,7 +33,7 @@ int main() {
     // std::cout << std::endl;
     // os.close();
     std::cout << "Hello World!" << std::endl;
-    Parser parser("t.txt");
+    Parser parser("io/t.txt");
     Node *head = parser.parseCompoundStatement();
 
     parser.outputTree(head);

@@ -1,5 +1,5 @@
 #include "Node.hpp"
-#include "scanner.hpp"
+#include "../scanner/scanner.hpp"
 
 class Parser {
   private:

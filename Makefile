@@ -5,14 +5,14 @@ output: main.o scanner.o parser.o Node.o
 main.o: main.cpp
 	$(CC) -g -c -std=c++17 main.cpp
 
-scanner.o: scanner.cpp scanner.hpp
-	$(CC) -g -c -std=c++17 scanner.cpp
+scanner.o: ./scanner/scanner.cpp ./scanner/scanner.hpp
+	$(CC) -g -c -std=c++17 ./scanner/scanner.cpp
 
-parser.o: parser.cpp parser.hpp
-	$(CC) -g -c -std=c++17 parser.cpp
+parser.o: ./parser/parser.cpp ./parser/parser.hpp
+	$(CC) -g -c -std=c++17 ./parser/parser.cpp
 
-Node.o: Node.cpp Node.hpp
-	$(CC) -g -c -std=c++17 Node.cpp
+Node.o: ./parser/Node.cpp ./parser/Node.hpp
+	$(CC) -g -c -std=c++17 ./parser/Node.cpp
 
 clean:
 	rm *.o output
