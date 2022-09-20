@@ -1,0 +1,14 @@
+<program> ::= program <identifier> ; <block> . <identifier> ::= <letter > {<letter or digit>}
+<letter or digit> ::= <letter> | <digit>
+<block> ::= <label declaration part> <constant definition part> <type definition part> <variable declaration part> <procedure and function declaration part> <statement part>
+<label declaration part> ::= <empty> | label <label> {, <label>} ;
+<label> ::= <unsigned integer>
+<constant definition part> ::= <empty> | const <constant definition> { ; <constant definition>} ; <constant definition> ::= <identifier> = <constant> <constant> ::= <unsigned number> | <sign> <unsigned number> | <constant identifier> | <sign> <constant identifier> | <string>
+<unsigned number> ::= <unsigned integer> | <unsigned real> <unsigned integer> ::= <digit> {<digit>}
+<unsigned real> ::= <unsigned integer> . <unsigned integer> | <unsigned integer> . <unsigned integer> E <scale factor>| <unsigned integer> E <scale factor>
+<scale factor> ::= <unsigned integer> | <sign> <unsigned integer> <sign> ::= + | -
+<constant identifier> ::= <identifier>
+<string> ::= '<character> {<character>}'
+<type definition part> ::= <empty> | type <type definition> {;<type definition>}; <type definition> ::= <identifier> = <type>
+<type> ::= <simple type> | <structured type> | <pointer type>
+<simple type> ::= <scalar type> | <subrange type> | <type identifier>

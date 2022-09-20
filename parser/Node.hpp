@@ -20,7 +20,7 @@
 
 enum class NodeType {
     PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN,
-    ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT,
+    ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT, NEGATE, POS,
     VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT
 };
 
@@ -34,6 +34,8 @@ class Node {
         std::string getTypeString();
         void setValue(int val);
         int getValue();
+        void setLine(int l);
+        int getLine();
         void setParent(Node *parent);
         Node *getParent();
         void adopt(Node *child);
@@ -45,4 +47,5 @@ class Node {
         int value;
         Node *parent;
         std::vector<Node*> children;
+        int line;
 };

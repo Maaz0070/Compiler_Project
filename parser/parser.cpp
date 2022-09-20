@@ -13,50 +13,103 @@ Parser::~Parser() {
 
 }
 
-// Node *Parser::parseProgram() {
-//     Node *head = new Node(NodeType::PROGRAM);
-    
-//     Token tok = scanner.nextToken();
-//     if (tok.label == "PROGRAM") {
-//         tok = scanner.nextToken();
-//         if (tok.label == "IDENTIFIER") {
-//           head->setName(tok.value);
-//         } else {
-//           return NULL; // SYNTAX ERROR
-//         }
-//         tok = scanner.nextToken();
-//         if (tok.label != "LPAREN") {
-//           return NULL; // SYNTAX ERROR
-//         }
-//         while (tok.label != "RPAREN") {
-//           tok = scanner.nextToken();
-//           if (tok.label != "IDENTIFIER") {
-//             return NULL; // SYNTAX ERROR
-//           }
-//           tok = scanner.nextToken();
-//           if (tok.label == "RPAREN") {
-//             break;
-//           } else if (tok.label != "COMMA") {
-//             return NULL; // SYNTAX ERROR
-//           }
-//         }
-//         if (tok.label == "SEMICOLON") {
-//             head->adopt(parseCompoundStatement());
-//             tok = scanner.nextToken();
-//             if (tok.label == "DOT") {
-//                 return head;
-//             }
-//         }
-//     }
+Node *Parser::parseProgram() {
+    Node *head = new Node(NodeType::PROGRAM);
+    Node *tmp;
+    Token tok = scanner.nextToken();
+    int firstLine = tok.line;
+    if (tok.label != "PROGRAM")
+      return NULL;
+    tmp = parseIdentifier();
+    if (tmp == NULL)
+        return NULL;
+    tok = scanner.nextToken();
+    if (tok.label != "SEMICOLON")
+        return NULL;
+    tmp = parseBlock();
+    if (tmp == NULL)
+        return NULL;
+    head->adopt(tmp);
+    head->setType(NodeType::PROGRAM);
+    head->setLine(firstLine);
+    tok = scanner.nextToken();
+    if (tok.label != "PERIOD")
+        return NULL;
+    return head; 
+}
 
-//     return NULL; // SYNTAX ERROR SOMEWHERE
-// }
+Node *Parser::parseIdentifier() {
+    Token tok = scanner.nextToken();
+    if (tok.label != "IDENTIFIER")
+        return NULL;
+    Node *node = new Node(NodeType::VARIABLE);
+    node->setName(tok.value);
+    node->setLine(tok.line);
+    return node;
+}
+
+Node *Parser::parseBlock() {
+    Node *head = new Node(NodeType::COMPOUND); 
+    Node *tmp;
+    head = parseCompoundStatement();
+    if (head != NULL) 
+        return head;
+    return NULL; // all failed
+}
+
+Node *Parser::parseLabel() {
+    return parseUnsignedInteger();
+}
+
+Node *Parser::parseUnsignedNumber() {
+    Node *head = new Node(NodeType::INTEGER_CONSTANT);
+    Token tok = scanner.nextToken();
+    if (tok.label=="INTEGER") {
+      head->setValue(std::stoi(tok.value));
+      return head;
+    } else if (tok.label == "REAL") {
+      head->setType(NodeType::REAL_CONSTANT);
+      head->setValue(std::stof(tok.value));
+      return head;
+    } 
+    return NULL;
+}
+
+Node *Parser::parseUnsignedInteger() {
+    return parseIntegerConstant();
+}
+
+Node *Parser::parseSign() {
+    Node *head = new Node(NodeType::NEGATE);
+    Token tok = scanner.nextToken();
+    if (tok.label == "PLUS") {
+        head->setType(NodeType::POS);
+        return head;
+    } else if (tok.label == "MINUS") {
+        return head;
+    }
+    return NULL;
+}
+
+Node *Parser::parseConstantIdentifier() {
+    return parseIdentifier();
+}
+
+Node *Parser::parseString() {
+  Node *node = new Node(NodeType::STRING_CONSTANT);
+  Token tok = scanner.nextToken();
+  if (tok.label != "STRING")
+    return NULL;
+  node->setName(tok.value);
+  return node;
+}
 
 Node *Parser::parseCompoundStatement() {
     std::cout << "parseCompoundStatement" << std::endl;
     Node *head = new Node(NodeType::COMPOUND);
     Node *tmp;
     Token tok = scanner.nextToken();
+    head->setLine(tok.line);
     if (tok.label == "BEGIN") {
         do {
             tmp = parseStatement();
@@ -202,6 +255,10 @@ Node *Parser::parseIntegerConstant() {
 //     }
 //     return head;
 // }
+
+void printTag() {
+
+}
 
 void Parser::outputTree(Node *node, int indentLevel) {
     std::string prefix = "";

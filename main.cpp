@@ -20,21 +20,9 @@ void printTok(Token tok, std::ostream& os) {
 
 //masterTestCase.txt
 int main() {
-    // Scanner scanner("t.txt");
-    // // Scanner scanner("test-in.txt");
-    // std::ofstream os("test-out.txt");
-    // Token token = scanner.nextToken();
-    // while (!scanner.isEOF) {
-    //     printTok(token, os);
-    //     std::cout << std::endl;
-    //     token = scanner.nextToken();
-    // }
-    // printTok(token, os);
-    // std::cout << std::endl;
-    // os.close();
-    std::cout << "Hello World!" << std::endl;
+    
     Parser parser("io/t.txt");
-    Node *head = parser.parseCompoundStatement();
+    Node *head = parser.parseProgram();
 
     parser.outputTree(head);
 

@@ -70,6 +70,13 @@ std::vector<Node *> Node::getChildren() {
     return children;
 }
 
+void Node::setLine(int l) {
+    line = l;
+}
+int Node::getLine() {
+    return line;
+}
+
 // Node *Node::parseStatement(std::string exp) {
 //     std::vector<char*> list;
 //     for(int i = 0; exp.length(); i++) {
