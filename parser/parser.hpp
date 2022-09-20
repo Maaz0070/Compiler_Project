@@ -31,6 +31,10 @@ class Parser {
     Node *parseVariable();
     Node *parseIntegerConstant();
     Node *parseRealConstant();
+    Node *parseTypeDefinitionPart();
+    Node *parseTypeDefinition();
+    Node *parseType();
+    Node *parseSimpleType();
     Node *parseScalarType();
     Node *parseSubrangeType();
     Node *parseTypeIdentifier();
