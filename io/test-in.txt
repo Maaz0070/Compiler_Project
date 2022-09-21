@@ -1,17 +1,9 @@
-Test kit
-begin begins BEGIN Begin BeGiN 
-''
-'Hello, world.'
-''
-'C' 'B' ''
-
-
-+ - * / := . , ; : = <> < <= >= > ( ) [ ] { } } ^ ..
-+-:=<>=<==))
-]
-1213 43213 
-2314.3123
-3214.123131.123
-3.14.1
-Testing?
-PLEASE!
+PROGRAM HelloWorld;
+BEGIN
+    i := 0;
+    REPEAT
+      i := i + 1;
+      write('#'); write(i);
+      writeln(': Hello, world!');
+    UNTIL i = 5;
+END.

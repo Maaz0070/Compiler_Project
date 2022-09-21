@@ -1,5 +1,7 @@
 PROGRAM HelloWorld;
-    BEGIN
-        i := i;
-        writeln('wow');
-    END.
+BEGIN
+    i := 0;
+    REPEAT
+      i := i + 1;
+    UNTIL i = 5;
+END.

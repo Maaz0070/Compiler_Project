@@ -19,9 +19,10 @@
 // };
 
 enum class NodeType {
-    PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN,
-    ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT, NEGATE, POS,
-    VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, GOTO
+    PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN, LIST,
+    ADD, SUBTRACT, OR, MULTIPLY, DIVIDE, IN, EQ, LT, GT, NE, LTEQ, GTEQ,NEGATE, POS, NOT, DOTDOT,
+    VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, GOTO, EMPTY, IF, CASE, COND, THEN, ELSE, CASEELEM,
+    REPEAT, UNTIL
 };
 
 class Node {
@@ -32,8 +33,8 @@ class Node {
         void setType(NodeType type);
         NodeType getType();
         std::string getTypeString();
-        void setValue(int val);
-        int getValue();
+        void setValue(double val);
+        double getValue();
         void setLine(int l);
         int getLine();
         void setParent(Node *parent);
@@ -44,7 +45,7 @@ class Node {
     private:
         NodeType type;
         std::string name;
-        int value;
+        double value;
         Node *parent;
         std::vector<Node*> children;
         int line;

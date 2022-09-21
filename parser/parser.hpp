@@ -14,6 +14,7 @@ class Parser {
     Node *parseProgram();
     Node *parseIdentifier();
     Node *parseConstantIdentifier();
+    Node *parseConstant();
     Node *parseBlock();
     Node *parseLabel();
     Node *parseUnsignedNumber();
@@ -33,6 +34,7 @@ class Parser {
     Node *parseVariable();
     Node *parseIntegerConstant();
     Node *parseRealConstant();
+    Node *parseUnsignedReal();
     Node *parseTypeDefinitionPart();
     Node *parseTypeDefinition();
     Node *parseType();

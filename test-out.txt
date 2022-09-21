@@ -6,12 +6,34 @@ IDENTIFIER          :   i
 ASSIGN              :   :=                                                          
 INTEGER             :   0                                                           
 SEMICOLON           :   ;                                                           
-WRITELN             :   writeln                                                     
+REPEAT              :   REPEAT                                                      
+IDENTIFIER          :   i                                                           
+ASSIGN              :   :=                                                          
+IDENTIFIER          :   i                                                           
+PLUSOP              :   +                                                           
+INTEGER             :   1                                                           
+SEMICOLON           :   ;                                                           
+WRITE               :   write                                                       
 LPAREN              :   (                                                           
-STRING              :   'unformat'                                                  
-COMMA               :   ,                                                           
+TOKEN ERROR at line 8:  invalid string ''#''
+INVALID             :   '#'                                                         
+RPAREN              :   )                                                           
+SEMICOLON           :   ;                                                           
+WRITE               :   write                                                       
+LPAREN              :   (                                                           
 IDENTIFIER          :   i                                                           
 RPAREN              :   )                                                           
+SEMICOLON           :   ;                                                           
+WRITELN             :   writeln                                                     
+LPAREN              :   (                                                           
+TOKEN ERROR at line 9:  invalid string '': Hello, world!''
+INVALID             :   ': Hello, world!'                                           
+RPAREN              :   )                                                           
+SEMICOLON           :   ;                                                           
+UNTIL               :   UNTIL                                                       
+IDENTIFIER          :   i                                                           
+EQUAL               :   =                                                           
+INTEGER             :   5                                                           
 SEMICOLON           :   ;                                                           
 END                 :   END                                                         
 PERIOD              :   .                                                           

@@ -24,6 +24,10 @@ NodeType Node::getType() {
     return type;
 }
 
+
+// PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN, LIST,
+//     ADD, SUBTRACT, OR, MULTIPLY, DIVIDE, IN, EQ, LT, GT, NE, LTEQ, GTEQ,NEGATE, POS, NOT, DOTDOT,
+//     VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, GOTO, EMPTY
 std::string Node::getTypeString() {
     switch (type) {
         case NodeType::PROGRAM:
@@ -44,16 +48,110 @@ std::string Node::getTypeString() {
         case NodeType::INTEGER_CONSTANT:
             return "INTEGER_CONSTANT";
             break;
+        case NodeType::REAL_CONSTANT:
+            return "REAL_CONSTANT";
+            break;
+        case NodeType::STRING_CONSTANT:
+            return "STRING_CONSTANT";
+            break;
+        case NodeType::GOTO:
+            return "GOTO";
+            break;
+        case NodeType::EMPTY:
+            return "EMPTY";
+            break;
+        case NodeType::ADD:
+            return "ADD";
+            break;
+        case NodeType::SUBTRACT:
+            return "SUBTRACT";
+            break;
+        case NodeType::OR:
+            return "OR";
+            break;
+        case NodeType::MULTIPLY:
+            return "MULTIPLY";
+            break;
+        case NodeType::DIVIDE:
+            return "DIVIDE";
+            break;
+        case NodeType::IN:
+            return "IN";
+            break;
+        case NodeType::EQ:
+            return "EQ";
+            break;
+        case NodeType::LT:
+            return "LT";
+            break;
+        case NodeType::GT:
+            return "GT";
+            break;
+        case NodeType::NE:
+            return "NE";
+            break;
+        case NodeType::LTEQ:
+            return "LTEQ";
+            break;
+        case NodeType::GTEQ:
+            return "GTEQ";
+            break;
+        case NodeType::NEGATE:
+            return "NEGATE";
+            break;
+        case NodeType::POS:
+            return "POS";
+            break;
+        case NodeType::NOT:
+            return "NOT";
+            break;
+        case NodeType::DOTDOT:
+            return "DOTDOT";
+            break;
+        case NodeType::WRITE:
+            return "WRITE";
+            break;
+        case NodeType::WRITELN:
+            return "WRITELN";
+            break;
+        case NodeType::LIST:
+            return "LIST";
+            break;
+        case NodeType::TEST:
+            return "TEST";
+            break;
+        case NodeType::IF:
+            return "IF";
+            break;
+        case NodeType::THEN:
+            return "THEN";
+            break;
+        case NodeType::ELSE:
+            return "ELSE";
+            break;
+        case NodeType::CASE:
+            return "CASE";
+            break;
+        case NodeType::COND:
+            return "COND";
+            break;
+        case NodeType::REPEAT:
+            return "REPEAT";
+            break;
+        case NodeType::UNTIL:
+            return "UNTIL";
+            break;  
         default:
             return "UNKNOWN";
             break;
+        
     }
 }
 
-void Node::setValue(int newVal) {
+void Node::setValue(double newVal) {
     value = newVal;
 }
-int Node::getValue() {
+double Node::getValue() {
     return value;
 }
 void Node::setParent(Node *par) {
