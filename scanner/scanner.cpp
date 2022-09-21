@@ -515,8 +515,8 @@ int Scanner::nextState(int curState, char input) {
       else if (transition == SPEC2) return 6;
       else if (transition == QUOTE) return 0;
       else if (transition == SPACE) return 6;
-      else if (transition == INVC) return 0;
-      else return -1;
+      else if (transition == INVC) return 6;
+      else return 6;
       break;
     // ERROR
     case 7:

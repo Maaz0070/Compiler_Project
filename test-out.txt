@@ -15,8 +15,7 @@ INTEGER             :   1
 SEMICOLON           :   ;                                                           
 WRITE               :   write                                                       
 LPAREN              :   (                                                           
-TOKEN ERROR at line 8:  invalid string ''#''
-INVALID             :   '#'                                                         
+STRING              :   '#'                                                         
 RPAREN              :   )                                                           
 SEMICOLON           :   ;                                                           
 WRITE               :   write                                                       
@@ -26,8 +25,7 @@ RPAREN              :   )
 SEMICOLON           :   ;                                                           
 WRITELN             :   writeln                                                     
 LPAREN              :   (                                                           
-TOKEN ERROR at line 9:  invalid string '': Hello, world!''
-INVALID             :   ': Hello, world!'                                           
+STRING              :   ': Hello, world!'                                           
 RPAREN              :   )                                                           
 SEMICOLON           :   ;                                                           
 UNTIL               :   UNTIL                                                       
