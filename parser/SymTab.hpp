@@ -9,6 +9,14 @@ class SymTabNode {
             this->type = type;
             this->line = line;
         }
+        void setId(int id);
+        void setScope(std::string scope);
+        void setType(std::string type);
+        void setLine(int line);
+        std::string getId();
+        std::string getScope();
+        std::string getType();
+        int getLine();
     private:
       std::string id;
       std::string type;
@@ -25,5 +33,4 @@ public:
     void print();
 private:
     std::unordered_map<std::string, SymTabNode> table;
-};
 };

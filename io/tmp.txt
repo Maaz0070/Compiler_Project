@@ -12,3 +12,15 @@
 <type definition part> ::= <empty> | type <type definition> {;<type definition>}; <type definition> ::= <identifier> = <type>
 <type> ::= <simple type> | <structured type> | <pointer type>
 <simple type> ::= <scalar type> | <subrange type> | <type identifier>
+
+
+
+
+
+parseStatement() {
+  tok = nexttoken();
+
+  head = new node;
+  
+  
+}

@@ -9,6 +9,8 @@ class Parser {
     Parser();
     Parser(std::string filename="masterTestCase.txt");
     ~Parser();
+    bool accept(std::string label);
+    bool expect(std::string label);
     Node *parseProgram();
     Node *parseIdentifier();
     Node *parseConstantIdentifier();
@@ -75,13 +77,9 @@ class Parser {
     Node *parseMultiplyingOperator();
     Node *parseStringConstant();
     Node *parseUnsignedConstant();
-    Node *parseFunctionDesignator();
-    Node *parseFunctionIdentifier();
     Node *parseSet();
     Node *parseElementList();
     Node *parseElement();
-    Node *parseProcedureStatement();
-    Node *parseProcedureIdentifier();
     Node *parseActualParameter();
     Node *parseGoToStatement();
     Node *parseEmptyStatement();

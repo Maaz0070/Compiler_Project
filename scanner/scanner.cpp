@@ -35,6 +35,8 @@ Scanner::Scanner(std::string fileName) {
 
     // 
     lookupKeywords = {
+      {"write", "WRITE"},
+      {"writeln", "WRITELN"},
       {"and","AND"},
       {"array","ARRAY"},
       {"asm","ASM"},
@@ -171,6 +173,10 @@ std::string toLower(std::string str) {
     return res;
 }
 
+Token Scanner::getCurTok() {
+    return curTok;
+}
+
 // checks if token label is part of keyword set, creates labels
 void Scanner::look_up(Token& res) {
     res.isKeyword = false;
@@ -229,6 +235,7 @@ Token Scanner::nextToken() {
           res.value = "EOF";
           res.label = "INVALID";
         }
+        curTok = res;
         return res;
       }
       getTokenType(res, state);
@@ -244,12 +251,14 @@ Token Scanner::nextToken() {
           file.unget();
           getTokenType(res, state);
           look_up(res);
+          curTok = res;
           return res;
         }
         opStack.push(cur);
         res.type = SPECIAL1;
         res.value = cur;
         look_up(res);
+        curTok = res;
         return res;
       }
       if (cur == ')' || cur == ']' || cur == '}') {
@@ -257,12 +266,14 @@ Token Scanner::nextToken() {
           file.unget();
           getTokenType(res, state);
           look_up(res);
+          curTok = res;
           return res;
         }
         if (opStack.empty()) {
           res.type = INVALID;
           res.value = cur;
           look_up(res);
+          curTok = res;
           return res;
         }
         char top = opStack.top();
@@ -271,11 +282,13 @@ Token Scanner::nextToken() {
           res.type = SPECIAL1;
           res.value = cur;
           look_up(res);
+          curTok = res;
           return res;
         } else {
           res.type = INVALID;
           res.value = cur;
           look_up(res);
+          curTok = res;
           return res;
         }
       }
@@ -286,6 +299,7 @@ Token Scanner::nextToken() {
           res.value += '\'';
           getTokenType(res, state);
           look_up(res);
+          curTok = res;
           return res;
         }
       }
@@ -296,6 +310,7 @@ Token Scanner::nextToken() {
           file.putback(cur);
           getTokenType(res, state);
           look_up(res);
+          curTok = res;
           return res;
         }
 
@@ -307,6 +322,7 @@ Token Scanner::nextToken() {
           if (res.value != "") {
             getTokenType(res, state);
             look_up(res);
+            curTok = res;
             return res;
           }
           continue;
@@ -323,6 +339,7 @@ Token Scanner::nextToken() {
             res.value = tmpString;
             getTokenType(res, 5);
             look_up(res);
+            curTok = res;
             return res;
           } 
           
@@ -334,6 +351,7 @@ Token Scanner::nextToken() {
         res.value = cur;
         getTokenType(res, 4);
         look_up(res);
+        curTok = res;
         return res;
       }
       
@@ -347,6 +365,7 @@ Token Scanner::nextToken() {
           look_up(res);
           file.putback('.');
           file.putback('.');
+          curTok = res;
           return res;
         }
         file.unget();
@@ -368,12 +387,14 @@ Token Scanner::nextToken() {
         //   file.putback(cur);
         getTokenType(res, prevState);
         look_up(res);
+        curTok = res;
         return res; 
       }
       else 
         if (qflag || !isWhitespace(cur))
           res.value += cur;
     }
+    curTok = res;
     return res;
 }
 

@@ -46,6 +46,7 @@ class Scanner {
         std::unordered_map<std::string, std::string> lookupOperators;
         std::stack<char> opStack;
         std::string errString;
+        Token curTok;
 
         
     
@@ -56,6 +57,8 @@ class Scanner {
         void getTokenType(Token& res, int state);
         bool isEOF;
         Token nextToken();
+        Token getCurTok();
+        void putBackToken();
         int getTransition(char input);
         int nextState(int curState, char input);
 };

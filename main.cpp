@@ -20,6 +20,19 @@ void printTok(Token tok, std::ostream& os) {
 
 //masterTestCase.txt
 int main() {
+    // Scanner scanner("./io/t.txt");
+    // // Scanner scanner("test-in.txt");
+    // std::ofstream os("test-out.txt");
+    // Token token = scanner.nextToken();
+    // while (!scanner.isEOF) {
+    //     printTok(token, os);
+    //     std::cout << std::endl;
+    //     token = scanner.nextToken();
+    // }
+    // printTok(token, os);
+    // std::cout << std::endl;
+    // os.close();
+    // return 0;
     
     Parser parser("io/t.txt");
     Node *head = parser.parseProgram();

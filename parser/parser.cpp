@@ -13,254 +13,327 @@ Parser::~Parser() {
 
 }
 
-Node *Parser::parseProgram() {
-    Node *head = new Node(NodeType::PROGRAM);
-    Node *tmp;
-    Token tok = scanner.nextToken();
-    int firstLine = tok.line;
-    if (tok.label != "PROGRAM")
-      return NULL;
-    tmp = parseIdentifier();
-    if (tmp == NULL)
-        return NULL;
-    tok = scanner.nextToken();
-    if (tok.label != "SEMICOLON")
-        return NULL;
-    tmp = parseBlock();
-    if (tmp == NULL)
-        return NULL;
-    head->adopt(tmp);
-    head->setType(NodeType::PROGRAM);
-    head->setLine(firstLine);
-    tok = scanner.nextToken();
-    if (tok.label != "PERIOD")
-        return NULL;
-    return head; 
+bool Parser::accept(std::string label) {
+  Token tok = scanner.getCurTok();
+  if (tok.label == label) {
+    scanner.nextToken();
+    return true;
+  }
+  return false;
 }
 
-Node *Parser::parseIdentifier() {
-    Token tok = scanner.nextToken();
-    if (tok.label != "IDENTIFIER")
-        return NULL;
-    Node *node = new Node(NodeType::VARIABLE);
-    node->setName(tok.value);
-    node->setLine(tok.line);
-    return node;
-}
-
-Node *Parser::parseBlock() {
-    Node *head = new Node(NodeType::COMPOUND); 
-    Node *tmp;
-    head = parseCompoundStatement();
-    if (head != NULL) 
-        return head;
-    return NULL; // all failed
-}
-
-Node *Parser::parseLabel() {
-    return parseUnsignedInteger();
-}
-
-Node *Parser::parseUnsignedNumber() {
-    Node *head = new Node(NodeType::INTEGER_CONSTANT);
-    Token tok = scanner.nextToken();
-    if (tok.label=="INTEGER") {
-      head->setValue(std::stoi(tok.value));
-      return head;
-    } else if (tok.label == "REAL") {
-      head->setType(NodeType::REAL_CONSTANT);
-      head->setValue(std::stof(tok.value));
-      return head;
-    } 
-    return NULL;
-}
-
-Node *Parser::parseUnsignedInteger() {
-    return parseIntegerConstant();
-}
-
-Node *Parser::parseSign() {
-    Node *head = new Node(NodeType::NEGATE);
-    Token tok = scanner.nextToken();
-    if (tok.label == "PLUS") {
-        head->setType(NodeType::POS);
-        return head;
-    } else if (tok.label == "MINUS") {
-        return head;
-    }
-    return NULL;
-}
-
-Node *Parser::parseConstantIdentifier() {
-    return parseIdentifier();
-}
-
-Node *Parser::parseString() {
-  Node *node = new Node(NodeType::STRING_CONSTANT);
-  Token tok = scanner.nextToken();
-  if (tok.label != "STRING")
-    return NULL;
-  node->setName(tok.value);
-  return node;
-}
-
-
-
-Node *Parser::parseCompoundStatement() {
-    std::cout << "parseCompoundStatement" << std::endl;
-    Node *head = new Node(NodeType::COMPOUND);
-    Node *tmp;
-    Token tok = scanner.nextToken();
-    head->setLine(tok.line);
-    if (tok.label == "BEGIN") {
-        do {
-            tmp = parseStatement();
-            head->adopt(tmp);
-            tok = scanner.nextToken();
-        } while (tok.label == "SEMICOLON");
-        if (tok.label == "END") {
-            return head;
-        }
-    }
-    return NULL; // SYNTAX ERROR SOMEWHERE
-}
-
-Node *Parser::parseStatementList() {
-  
+bool Parser::expect(std::string label) {
+  if (accept(label)) {
+    return true;
+  }
+  std::cout << "ERROR: Expected stead." << std::endl;
+  return false;
 }
 
 Node *Parser::parseStatement() {
-    Node *cur, *res;
-    Token tok = scanner.nextToken();
-    if (tok.label == "IDENTIFIER") {
-        curNode = new Node(NodeType::VARIABLE);
-        curNode->setName(tok.value);
-        res = parseAssignmentStatement();
-        return res;
-    } else if (tok.label == "BEGIN") {
-        return parseCompoundStatement();
-    } 
-    // else if (tok.label == "REPEAT") {
-    //     return parseRepeatStatement();
-    // } else if (tok.label == "WRITE") {
-    //     parseWriteStatement();
-    // } else if (tok.label == "WRITELN") {
-    //     return parseWritelnStatement();
-    // }
-    return NULL; // SYNTAX ERROR SOMEWHERE
+  return parseUnlabelledStatement();
 }
 
-Node *Parser::parseAssignmentStatement() {  
-    Node *head = new Node(NodeType::ASSIGN);
-    Token tok = scanner.nextToken();
-    
-    head->adopt(curNode);
-
-    // example: alpha := -88;
-    if (tok.label != "ASSIGN") {
-        return NULL; // SYNTAX ERROR
-    }
-
-    head->adopt(parseExpression());
-    return head;
+Node *Parser::parseUnlabelledStatement() {
+  return parseSimpleStatement();
 }
 
-Node *Parser::parseExpression() {
-    return parseSimpleExpression();
+Node *Parser::parseSimpleStatement() {
+  if (scanner.getCurTok().label == "WRITE") {
+    return parseWriteStatement();
+  } else if (scanner.getCurTok().label == "WRITELN") {
+    return parseWritelnStatement();
+  } else if (scanner.getCurTok().label == "IDENTIFIER") {
+    return parseAssignmentStatement();
+  } else if (scanner.getCurTok().label == "GOTO") {
+    return parseGoToStatement();
+  } else {
+    return NULL;
+  }
+}
+
+Node *Parser::parseAssignmentStatement() {
+  if (scanner.getCurTok().label != "IDENTIFIER") {
+    return NULL;
+  }
+  Node *head = new Node(NodeType::ASSIGN);
+  Node *var = new Node(NodeType::VARIABLE);
+  Node *exp;
+
+  var->setName(scanner.getCurTok().value);
+  var->setLine(scanner.getCurTok().line);
+  head->adopt(var);
+  scanner.nextToken();
+
+  if (scanner.getCurTok().label != "ASSIGN") {
+    return NULL;
+  }
+  // while (scanner.getCurTok().label != "SEMICOLON") {
+  //   exp = parseExpression();
+  //   exp->setLine(scanner.getCurTok().line);
+  //   if (exp == NULL) {
+  //     return NULL;
+  //   }
+  //   scanner.nextToken();
+  //   head->adopt(exp);
+  // }
+  exp = parseExpression();
+  exp->setLine(scanner.getCurTok().line);
+  head->adopt(exp);
+  scanner.nextToken();
+  // scanner.nextToken();
+  
+  // exp = parseExpression();
+  if (exp == NULL) {
+    return NULL;
+  }
+
+  return head;
 }
 
 Node *Parser::parseSimpleExpression() {
-  Node *head;
-  head = parseTerm();
+  Node *head, *tmp, *tmp2, *tmp3;
+  head = parseTerm(); 
   if (head != NULL) {
     return head;
-  } else if (scanner.nextToken().label == "MINUS") {
-    head = parseTerm();
-    if (head != NULL) {
-      return head;
-    } 
-  } else {
-    head = parseSimpleExpression();
-    if (scanner.nextToken().label != "PLUS") {
-      return NULL; // SYNTAX ERROR
-    }
   }
-  //<simple expression> <adding operator> <term>  
-  return NULL;
+  head = parseSign();
+  tmp = parseTerm();
+  if (head != NULL && tmp != NULL) {
+    head->adopt(tmp);
+    return head;
+  }
+  head = new Node(NodeType::ADD);
+  tmp = parseSimpleExpression();
+  tmp2 = parseAddingOperator();
+  tmp3 = parseSimpleExpression();
+  head->adopt(tmp);
+  head->adopt(tmp2);
+  head->adopt(tmp3);
+  if (head==NULL || tmp==NULL || tmp2==NULL || tmp3==NULL) {
+    return NULL;
+  }
+  return head;
+}
+
+Node *Parser::parseVariable() {
+  if (scanner.getCurTok().label != "IDENTIFIER") {
+    return NULL;
+  }
+  Node *head = new Node(NodeType::VARIABLE);
+  head->setName(scanner.getCurTok().value);
+  head->setLine(scanner.getCurTok().line);
+  scanner.nextToken();
+  return head;
+}
+
+Node *Parser::parseAddingOperator() {
+  if (scanner.getCurTok().label == "PLUS") {
+    Node *head = new Node(NodeType::ADD);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else if (scanner.getCurTok().label == "MINUS") {
+    Node *head = new Node(NodeType::SUBTRACT);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else {
+    return NULL;
+  }
+}
+
+Node *Parser::parseUnsignedConstant() {
+  if (scanner.getCurTok().label == "INTEGER_CONSTANT") {
+    Node *head = new Node(NodeType::INTEGER_CONSTANT);
+    head->setValue(std::stoi(scanner.getCurTok().value));
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else if (scanner.getCurTok().label == "IDENTIFIER") {
+    Node *head = new Node(NodeType::VARIABLE);
+    head->setName(scanner.getCurTok().value);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else {
+    return NULL;
+  }
+}
+
+Node *Parser::parseMultiplyingOperator() {
+  if (scanner.getCurTok().label == "MULTOP") {
+    Node *head = new Node(NodeType::MULTIPLY);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else if (scanner.getCurTok().label == "DIVOP") {
+    Node *head = new Node(NodeType::DIVIDE);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else {
+    return NULL;
+  }
+}
+
+Node *Parser::parseSign() {
+  if (scanner.getCurTok().label == "PLUS") {
+    Node *head = new Node(NodeType::POS);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else if (scanner.getCurTok().label == "MINUS") {
+    Node *head = new Node(NodeType::NEGATE);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
+  } else {
+    return NULL;
+  }
 }
 
 Node *Parser::parseTerm() {
-  Node *head;
+  Node *head, *tmp, *tmp2, *tmp3;
   head = parseFactor();
   if (head != NULL) {
     return head;
   }
-  return NULL;
+  head = new Node(NodeType::MULTIPLY);
+  tmp = parseTerm();
+  tmp2 = parseMultiplyingOperator();
+  tmp3 = parseFactor();
+  head->adopt(tmp);
+  head->adopt(tmp2);
+  head->adopt(tmp3);
+  if (head==NULL || tmp==NULL || tmp2==NULL || tmp3==NULL) {
+    return NULL;
+  }
+  return head;
 }
 
 Node *Parser::parseFactor() {
-  Node *head;
-  head = parseIntegerConstant();
-  if (head != NULL) {
-    return head;
+  if (scanner.getCurTok().label == "IDENTIFIER") {
+    return parseVariable();
+  } else if (scanner.getCurTok().label == "INTEGER") {
+    return parseUnsignedConstant();
+  } else if (scanner.getCurTok().label == "STRING") {
+    return parseString();
+  } else if (scanner.getCurTok().label == "LPAREN") {
+    return parseExpression();
+    if (scanner.getCurTok().label != "RPAREN") {
+      scanner.nextToken();
+      return NULL;
+    }
+  } else {
+    return NULL;
   }
-  return NULL;
 }
 
+Node *Parser::parseString() {
+  if (scanner.getCurTok().label != "STRING") {
+    return NULL;
+  }
+  Node *head = new Node(NodeType::STRING_CONSTANT);
+  head->setName(scanner.getCurTok().value);
+  head->setLine(scanner.getCurTok().line);
+  scanner.nextToken();
+  return head;
+}
 
-Node *Parser::parseIntegerConstant() {
-  Node *head = new Node(NodeType::INTEGER_CONSTANT);
-  Token tok = scanner.nextToken();
-  if (tok.label=="INTEGER") {
-    head->setValue(std::stoi(tok.value));
+Node *Parser::parseExpression() {
+  return parseSimpleExpression();
+}
+
+Node *Parser::parseWriteStatement() {
+}
+
+Node *Parser::parseWritelnStatement() {
+    if (scanner.getCurTok().label != "WRITELN") {
+        return NULL;
+    }
+    Node *head = new Node(NodeType::WRITELN);
+    Node *exp;
+    scanner.nextToken();
+    if (scanner.getCurTok().label != "LPAREN") {
+        return NULL;
+    }
+
+    // do {
+    //     scanner.nextToken();
+    //     exp = parseExpression();
+    //     if (exp != NULL) {
+    //         head->adopt(exp);
+    //     }
+    //     if (scanner.nextToken().label == "COMMA") {
+    //         scanner.nextToken();
+    //     }
+    // } while (scanner.getCurTok().label != "RPAREN");
+    scanner.nextToken();
+    exp = parseExpression();
+    if (exp == NULL) {
+        return NULL;
+    }
+    head->adopt(exp);
+    if (scanner.getCurTok().label != "RPAREN") {
+        return NULL;
+    }
+    scanner.nextToken();
     return head;
-  } 
-  return NULL;
 }
 
-// Node *Node::parseStatement(std::string exp) {
-//     std::vector<char*> list;
-//     for(int i = 0; exp.length(); i++) {
-//         list.push_back(&exp[i]);
-//     }
-//     std::stack<Node*> stack;
-//     Node *head = new Node("");
-//     std::vector<std::string> vect{"+", "-", "*", "/"};
-//     std::vector<std::string> vect1{"+", "-", "*", "/", ")"};
-
-//     stack.push(head);
-//     Node *curr = head;
-    
-//     for(int i = 0; i < list.size(); i++) {
-//         std::string currChar(list[i]);
-//         if(list[i] == "(") {
-//             curr->insertLeft("");
-//             stack.push(curr);
-//             curr = curr->getLeftChild();
-//         }
-//         else if(find(vect.begin(), vect.end(), currChar) != vect.end()) {
-//             curr->setId(list[i]);
-//             curr->insertRight("");
-//             stack.push(curr);
-//             curr = curr->getRightChild();
-//         }
-//         else if(list[i] == ")") {
-//             curr = stack.top();
-//             stack.pop();
-//         }
-//         else if(find(vect1.begin(), vect1.end(), list[i]) == vect1.end()) {
-//             curr->setId(list[i]);
-//             Node *root = stack.top();
-//             stack.pop();
-//             curr = root;
-//         }
-//     }
-//     return head;
-// }
-
-void printTag() {
-
+Node *Parser::parseProgram() {
+    Node *head = new Node(NodeType::PROGRAM);
+    scanner.nextToken();
+    if (scanner.getCurTok().label != "PROGRAM")
+      return NULL;
+    if (scanner.nextToken().label != "IDENTIFIER")
+        return NULL;
+    if (scanner.nextToken().label != "SEMICOLON")
+        return NULL;
+    scanner.nextToken();
+    Node *tmp = parseBlock();
+    if (tmp == NULL)
+        return NULL;
+    head->adopt(tmp);
+    head->setType(NodeType::PROGRAM);
+    head->setLine(scanner.getCurTok().line);
+    if (scanner.nextToken().label != "PERIOD")
+        return NULL;
+    return head;
 }
+
+Node *Parser::parseBlock() {
+  Node *head;
+  head = parseCompoundStatement();
+  return head;
+}
+
+Node *Parser::parseCompoundStatement() {
+  if (scanner.getCurTok().label != "BEGIN")
+    return NULL;
+  scanner.nextToken();
+  Node *head = new Node(NodeType::COMPOUND);
+  head->setLine(scanner.getCurTok().line);
+  do {
+    Node *tmp = parseStatement();
+    if (tmp == NULL)
+      return NULL;
+    head->adopt(tmp);
+    if (scanner.getCurTok().label == "SEMICOLON")
+      scanner.nextToken();
+  } while (scanner.getCurTok().label != "END");
+
+  if (scanner.getCurTok().label != "END")
+    return NULL;
+  return head;
+}
+
+Node *Parser::parseGoToStatement() {
+    Node *head = new Node(NodeType::GOTO);
+    return head;
+}
+
 
 void Parser::outputTree(Node *node, int indentLevel) {
     std::string prefix = "";

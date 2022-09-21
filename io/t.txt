@@ -1,7 +1,5 @@
-program test;
-
-BEGIN
-    alpha  := 88;
-    beta   := 99;
-    result := 5
-END.
+PROGRAM HelloWorld;
+    BEGIN
+        i := i;
+        writeln('wow');
+    END.

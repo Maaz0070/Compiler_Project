@@ -1,0 +1,17 @@
+PROGRAM             :   PROGRAM                                                     
+IDENTIFIER          :   HelloWorld                                                  
+SEMICOLON           :   ;                                                           
+BEGIN               :   BEGIN                                                       
+IDENTIFIER          :   i                                                           
+ASSIGN              :   :=                                                          
+INTEGER             :   0                                                           
+SEMICOLON           :   ;                                                           
+WRITELN             :   writeln                                                     
+LPAREN              :   (                                                           
+STRING              :   'unformat'                                                  
+COMMA               :   ,                                                           
+IDENTIFIER          :   i                                                           
+RPAREN              :   )                                                           
+SEMICOLON           :   ;                                                           
+END                 :   END                                                         
+PERIOD              :   .                                                           
