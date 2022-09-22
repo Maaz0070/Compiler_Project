@@ -3,12 +3,13 @@
 #include <vector>
 #include <stack>
 
-Node::Node(NodeType ty) {
+Node::Node(NodeType ty, int newline) {
     type = ty;
     name = "";
     value = 0;
     parent = NULL;
     children = {};
+    line = newline;
 }
 
 void Node::setName(std::string newName) {

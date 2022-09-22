@@ -224,7 +224,16 @@ Token Scanner::nextToken() {
     // loop until end of file or null character
     while (!file.eof() && cur != '\0') {
       cur = file.get();
-      if (cur == '\n') line++;
+      if (cur == '\n' || cur == '\r') {
+        line++;
+        if (res.value.length() > 0) {
+          getTokenType(res, state);
+          look_up(res);
+          curTok = res;
+          return res;
+        }
+        continue;
+      }
       if (cur == EOF) {
         prevState = state;
         state = 8; // END STATE

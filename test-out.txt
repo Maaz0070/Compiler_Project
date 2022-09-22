@@ -1,37 +1,74 @@
 PROGRAM             :   PROGRAM                                                     
+1
 IDENTIFIER          :   HelloWorld                                                  
+1
 SEMICOLON           :   ;                                                           
+1
 BEGIN               :   BEGIN                                                       
+2
 IDENTIFIER          :   i                                                           
+3
 ASSIGN              :   :=                                                          
+3
 INTEGER             :   0                                                           
+3
 SEMICOLON           :   ;                                                           
+3
 REPEAT              :   REPEAT                                                      
+4
 IDENTIFIER          :   i                                                           
+5
 ASSIGN              :   :=                                                          
+5
 IDENTIFIER          :   i                                                           
+5
 PLUSOP              :   +                                                           
+5
 INTEGER             :   1                                                           
+5
 SEMICOLON           :   ;                                                           
+5
 WRITE               :   write                                                       
+6
 LPAREN              :   (                                                           
+6
 STRING              :   '#'                                                         
+6
 RPAREN              :   )                                                           
+6
 SEMICOLON           :   ;                                                           
+6
 WRITE               :   write                                                       
+6
 LPAREN              :   (                                                           
+6
 IDENTIFIER          :   i                                                           
+6
 RPAREN              :   )                                                           
+6
 SEMICOLON           :   ;                                                           
+6
 WRITELN             :   writeln                                                     
+7
 LPAREN              :   (                                                           
+7
 STRING              :   ': Hello, world!'                                           
+7
 RPAREN              :   )                                                           
+7
 SEMICOLON           :   ;                                                           
+7
 UNTIL               :   UNTIL                                                       
+8
 IDENTIFIER          :   i                                                           
+8
 EQUAL               :   =                                                           
+8
 INTEGER             :   5                                                           
+8
 SEMICOLON           :   ;                                                           
+8
 END                 :   END                                                         
+9
 PERIOD              :   .                                                           
+9

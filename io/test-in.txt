@@ -1,9 +1,9 @@
 PROGRAM HelloWorld;
 BEGIN
     i := 0;
-    REPEAT
-      i := i + 1;
-      write('#'); write(i);
-      writeln(': Hello, world!');
-    UNTIL i = 5;
+    if (x < y) then
+        begin
+            x := y;
+            i1 := i1 + 1;
+        end
 END.
