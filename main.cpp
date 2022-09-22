@@ -58,7 +58,7 @@ void testParser(std::string filename="test-in.txt") {
 int main(int argc, char *argv[]) {
 
     if (argc == 1) {
-        testParser("in.txt");
+        testParser("test-in.txt");
     } else if (argc == 3 && std::string(argv[1]) == "-scan") {
         testScanner(std::string(argv[2]));
     } else if (argc == 3 && std::string(argv[1]) == "-parse") {

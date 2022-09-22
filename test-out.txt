@@ -2,7 +2,7 @@ PARSER OUTPUT
 <PROGRAM line=1>
    <COMPOUND line=2>
       <LOOP line=3>
-         <VARIABLE line=3 name=/>
+         <VARIABLE line=3 name=i/>
          <TEST line=3>
             <INTEGER_CONSTANT line=3 value=10/>
             <INTEGER_CONSTANT line=3 value=1/>

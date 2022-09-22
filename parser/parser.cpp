@@ -492,6 +492,7 @@ Node *Parser::parseRepetitiveStatement() {
   Node *fr = parseForStatement();
   if (fr != NULL)
     return fr;
+  return NULL;
 }
 
 Node *Parser::parseIdentifier() {
@@ -499,6 +500,7 @@ Node *Parser::parseIdentifier() {
   if (scanner.getCurTok().label != "IDENTIFIER")
     return NULL;
   symTab.insert(scanner.getCurTok().value);
+  head->setName(scanner.getCurTok().value);
   scanner.nextToken();
   return head;
 }
