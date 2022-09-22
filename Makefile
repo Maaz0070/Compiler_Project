@@ -1,6 +1,6 @@
 CC=g++
-output: main.o scanner.o parser.o Node.o
-	$(CC) -g main.o scanner.o parser.o Node.o -o output
+output: main.o scanner.o parser.o Node.o SymTab.o SymTabNode.o
+	$(CC) -g main.o scanner.o parser.o Node.o SymTab.o SymTabNode.o -o output
 
 main.o: main.cpp
 	$(CC) -g -c -std=c++17 main.cpp
@@ -13,6 +13,12 @@ parser.o: ./parser/parser.cpp ./parser/parser.hpp
 
 Node.o: ./parser/Node.cpp ./parser/Node.hpp
 	$(CC) -g -c -std=c++17 ./parser/Node.cpp
+
+SymTab.o: ./parser/SymTab.cpp ./parser/SymTab.hpp
+	$(CC) -g -c -std=c++17 ./parser/SymTab.cpp
+
+SymTabNode.o: ./parser/SymTabNode.cpp ./parser/SymTabNode.hpp
+	$(CC) -g -c -std=c++17 ./parser/SymTabNode.cpp
 
 clean:
 	rm *.o output

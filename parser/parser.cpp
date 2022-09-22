@@ -3,31 +3,16 @@
 
 Parser::Parser() {
   scanner = Scanner("masterTestCase.txt");
+  symTab = SymTab();
 }
 
 Parser::Parser(std::string filename) {
   scanner = Scanner(filename);
+  symTab = SymTab();
 }
 
 Parser::~Parser() {
 
-}
-
-bool Parser::accept(std::string label) {
-  Token tok = scanner.getCurTok();
-  if (tok.label == label) {
-    scanner.nextToken();
-    return true;
-  }
-  return false;
-}
-
-bool Parser::expect(std::string label) {
-  if (accept(label)) {
-    return true;
-  }
-  std::cout << "ERROR: Expected stead." << std::endl;
-  return false;
 }
 
 Node *Parser::parseStatement() {
@@ -64,6 +49,7 @@ Node *Parser::parseAssignmentStatement() {
   Node *var = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
   Node *exp;
 
+  symTab.insert(scanner.getCurTok().value);
   var->setName(scanner.getCurTok().value);
   var->setLine(scanner.getCurTok().line);
   head->adopt(var);
@@ -72,30 +58,18 @@ Node *Parser::parseAssignmentStatement() {
   if (scanner.getCurTok().label != "ASSIGN") {
     return NULL;
   }
-  // while (scanner.getCurTok().label != "SEMICOLON") {
-  //   exp = parseExpression();
-  //   exp->setLine(scanner.getCurTok().line);
-  //   if (exp == NULL) {
-  //     return NULL;
-  //   }
-  //   scanner.nextToken();
-  //   head->adopt(exp);
-  // }
+  
   scanner.nextToken();
   exp = parseExpression();
   exp->setLine(scanner.getCurTok().line);
   head->adopt(exp);
-  // scanner.nextToken();
   
-  // exp = parseExpression();
   if (exp == NULL) {
     return NULL;
   }
 
   return head;
 }
-
-
 
 Node *Parser::parseSimpleExpression() {
   Node *term = parseTerm();
@@ -131,6 +105,7 @@ Node *Parser::parseVariable() {
     return NULL;
   }
   Node *head = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
+  symTab.insert(scanner.getCurTok().value);
   head->setName(scanner.getCurTok().value);
   head->setLine(scanner.getCurTok().line);
   scanner.nextToken();
@@ -164,6 +139,7 @@ Node *Parser::parseUnsignedConstant() {
     return head;
   } else if (scanner.getCurTok().label == "IDENTIFIER") {
     Node *head = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
+    symTab.insert(scanner.getCurTok().value);
     head->setName(scanner.getCurTok().value);
     head->setLine(scanner.getCurTok().line);
     scanner.nextToken();
@@ -379,7 +355,7 @@ Node *Parser::parseWriteStatement() {
     }
 
     scanner.nextToken();
-    exp = parseExpression();
+    exp = parseElementList();
     if (exp == NULL) {
         return NULL;
     }
@@ -403,7 +379,7 @@ Node *Parser::parseWritelnStatement() {
     }
 
     scanner.nextToken();
-    exp = parseExpression();
+    exp = parseElementList();
     if (exp == NULL) {
         return NULL;
     }
@@ -483,22 +459,100 @@ Node *Parser::parseStructuredStatement() {
   // return node;
 }
 
+Node *Parser::parseWhileStatement() {
+  Node *head = new Node(NodeType::LOOP, scanner.getCurTok().line);
+  if (scanner.getCurTok().label != "WHILE")
+    return NULL;
+  scanner.nextToken();
+  Node *test = new Node(NodeType::TEST, scanner.getCurTok().line);
+  Node *exp = parseExpression();
+  test->adopt(exp);
+  if (exp == NULL)
+    return NULL;
+  head->adopt(test);
+  if (scanner.getCurTok().label != "DO")
+    return NULL;
+  scanner.nextToken();
+  Node *tmp = parseStatement();
+  if (tmp == NULL)
+    return NULL;
+  head->adopt(tmp);
+  return head;
+}
+
+
+
 Node *Parser::parseRepetitiveStatement() {
-  // Node *wh = parseWhileStatement();
-  // if (wh != NULL)
-  //   return wh;
+  Node *wh = parseWhileStatement();
+  if (wh != NULL)
+    return wh;
   Node *re = parseRepeatStatement();
+  if (re != NULL)
     return re;
   Node *fr = parseForStatement();
   if (fr != NULL)
     return fr;
 }
 
+Node *Parser::parseIdentifier() {
+  Node *head = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
+  if (scanner.getCurTok().label != "IDENTIFIER")
+    return NULL;
+  symTab.insert(scanner.getCurTok().value);
+  scanner.nextToken();
+  return head;
+}
+
+Node *Parser::parseControlVariable() {
+  return parseIdentifier();
+}
+
 Node *Parser::parseForStatement() {
     if (scanner.getCurTok().label != "FOR") {
         return NULL;
     }
+    Node *head = new Node(NodeType::LOOP, scanner.getCurTok().line);
+    scanner.nextToken();
+    Node *ctrlVar = parseControlVariable();
+    if (ctrlVar == NULL) {
+        return NULL;
+    }
+    if (scanner.getCurTok().label != "ASSIGN") {
+        return NULL;
+    }
+    scanner.nextToken();
+    Node *forlist = parseForList();
+    if (forlist == NULL) {
+        return NULL;
+    }
+    if (scanner.getCurTok().label != "DO") {
+        return NULL;
+    }
+    scanner.nextToken();
+    Node *statement = parseStatement();
+    if (statement == NULL) {
+        return NULL;
+    }
+    head->adopt(ctrlVar);
+    head->adopt(forlist);
+    head->adopt(statement);
+    return head;
+}
 
+Node *Parser::parseForList() {
+  Node * initval = parseExpression();
+  Node *head = new Node(NodeType::TEST, scanner.getCurTok().line);
+  if (initval == NULL)
+    return NULL;
+  if (scanner.getCurTok().label != "TO" && scanner.getCurTok().label != "DOWNTO")
+    return NULL;
+  scanner.nextToken();
+  Node * finalval = parseExpression();
+  if (finalval == NULL)
+    return NULL;
+  head->adopt(initval);
+  head->adopt(finalval);
+  return head;
 }
  
 Node *Parser::parseRepeatStatement() {
@@ -582,9 +636,10 @@ Node *Parser::parseCaseStatement() {
     if (caselistElem == NULL)
       return NULL;
     head->adopt(caselistElem);
-  } while (scanner.getCurTok().label == "SEMICOLON");
-  if (scanner.getCurTok().label != "END")
-    return NULL;
+    if (scanner.getCurTok().label == "SEMICOLON")
+      scanner.nextToken();
+  } while (scanner.getCurTok().label != "END");
+  scanner.nextToken();
   return head;
 }
 
@@ -680,7 +735,7 @@ Node *Parser::parseConstant() {
   return NULL;  
 }
 
-void Parser::outputTree(Node *node, int indentLevel) {
+void Parser::outputTree(Node *node, int indentLevel, std::ostream &out) {
     std::string prefix = "";
     if (node == NULL) {
         return;
@@ -691,38 +746,42 @@ void Parser::outputTree(Node *node, int indentLevel) {
     }
 
     if (node->getType() == NodeType::VARIABLE) {
-      std::cout << prefix << "<" << node->getTypeString(); 
-      std::cout << " line=" << node->getLine();
-      std::cout << " name=" << node->getName() << "/>" << std::endl;
+      out << prefix << "<" << node->getTypeString(); 
+      out << " line=" << node->getLine();
+      out << " name=" << node->getName() << "/>" << std::endl;
       return;
     }
     if (node->getType() == NodeType::STRING_CONSTANT) {
-      std::cout << prefix << "<" << node->getTypeString(); 
-      std::cout << " line=" << node->getLine();
-      std::cout << " value=" << node->getName() << "/>" << std::endl;
+      out << prefix << "<" << node->getTypeString(); 
+      out << " line=" << node->getLine();
+      out << " value=" << node->getName() << "/>" << std::endl;
       return;
     }
     if (node->getType() == NodeType::INTEGER_CONSTANT) {
-      std::cout << prefix << "<" << node->getTypeString(); 
-      std::cout << " line=" << node->getLine();
-      std::cout << " value=" << node->getValue() << "/>" << std::endl;
+      out << prefix << "<" << node->getTypeString(); 
+      out << " line=" << node->getLine();
+      out << " value=" << node->getValue() << "/>" << std::endl;
       return;
     }
     if (node->getType() == NodeType::REAL_CONSTANT) {
-      std::cout << prefix << "<" << node->getTypeString(); 
-      std::cout << " line=" << node->getLine();
-      std::cout << " name= " << node->getValue() << "/>" << std::endl;
+      out << prefix << "<" << node->getTypeString(); 
+      out << " line=" << node->getLine();
+      out << " name= " << node->getValue() << "/>" << std::endl;
       return;
     }
 
     if (node->getChildren().size() == 0) {
-      std::cout << prefix << "<" << node->getTypeString() << " line=" << node->getLine() << "/>" << std::endl;
+      out << prefix << "<" << node->getTypeString() << " line=" << node->getLine() << "/>" << std::endl;
       return;
     }
 
-    std::cout << prefix << "<"  << node->getTypeString() << " line=" << node->getLine() << ">" << std::endl;
+    out << prefix << "<"  << node->getTypeString() << " line=" << node->getLine() << ">" << std::endl;
     for (int i = 0; i < node->getChildren().size(); i++) {
-        outputTree(node->getChildren()[i], indentLevel + 1);
+        outputTree(node->getChildren()[i], indentLevel + 1, out);
     }
-    std::cout << prefix << "<" << node->getTypeString() << "/>" << std::endl;
+    out << prefix << "<" << node->getTypeString() << "/>" << std::endl;
+}
+
+void Parser::outputSymbolTable(std::ostream& out) {
+  symTab.output(out);
 }

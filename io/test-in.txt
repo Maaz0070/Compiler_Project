@@ -1,9 +1,0 @@
-PROGRAM HelloWorld;
-BEGIN
-    i := 0;
-    if (x < y) then
-        begin
-            x := y;
-            i1 := i1 + 1;
-        end
-END.

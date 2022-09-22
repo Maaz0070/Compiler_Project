@@ -1,10 +1,9 @@
-## g++ required to make program, or change CC in makefile
+# g++ required to make program, or change CC in makefile
 
-## The default test file name is 'masterTestCase.txt', which is used to construct the Scanner in main() of main.cpp line 22
-# To update the test text, please change the agurment of line #22 in main.cpp to the name of the new test file
- 						Scanner scanner("test-in.txt");
 # Instructions:
 
 1. make
-2. ./output
-3. Scanner output will be printed to stdout and 'scannerOutput.txt'
+2. ./output -parse [filename] OR ./output -scan [filename]
+3. input file should be in same directory as main.cpp
+4. default command ./output -parse test-in.txt
+5. output is printed in cout and test-out.txt

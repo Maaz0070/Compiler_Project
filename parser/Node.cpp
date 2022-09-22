@@ -142,6 +142,9 @@ std::string Node::getTypeString() {
         case NodeType::UNTIL:
             return "UNTIL";
             break;  
+        case NodeType::CASEELEM:
+            return "CASEELEM";
+            break;
         default:
             return "UNKNOWN";
             break;

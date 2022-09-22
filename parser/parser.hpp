@@ -1,9 +1,11 @@
 #include "Node.hpp"
+#include "SymTab.hpp"
 #include "../scanner/scanner.hpp"
 
 class Parser {
   private:
     Scanner scanner;
+    SymTab symTab;
     Node *curNode;
   public:
     Parser();
@@ -103,5 +105,6 @@ class Parser {
     Node *parseWithStatement();
     Node *parseRecordVariableList();
 
-    void outputTree(Node *node, int indentLevel=0); 
+    void outputTree(Node *node, int indentLevel, std::ostream& out=std::cout); 
+    void outputSymbolTable(std::ostream& out=std::cout);
 };

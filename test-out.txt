@@ -1,74 +1,162 @@
-PROGRAM             :   PROGRAM                                                     
-1
-IDENTIFIER          :   HelloWorld                                                  
-1
-SEMICOLON           :   ;                                                           
-1
-BEGIN               :   BEGIN                                                       
-2
-IDENTIFIER          :   i                                                           
-3
-ASSIGN              :   :=                                                          
-3
-INTEGER             :   0                                                           
-3
-SEMICOLON           :   ;                                                           
-3
-REPEAT              :   REPEAT                                                      
-4
-IDENTIFIER          :   i                                                           
-5
-ASSIGN              :   :=                                                          
-5
-IDENTIFIER          :   i                                                           
-5
-PLUSOP              :   +                                                           
-5
-INTEGER             :   1                                                           
-5
-SEMICOLON           :   ;                                                           
-5
-WRITE               :   write                                                       
-6
-LPAREN              :   (                                                           
-6
-STRING              :   '#'                                                         
-6
-RPAREN              :   )                                                           
-6
-SEMICOLON           :   ;                                                           
-6
-WRITE               :   write                                                       
-6
-LPAREN              :   (                                                           
-6
-IDENTIFIER          :   i                                                           
-6
-RPAREN              :   )                                                           
-6
-SEMICOLON           :   ;                                                           
-6
-WRITELN             :   writeln                                                     
-7
-LPAREN              :   (                                                           
-7
-STRING              :   ': Hello, world!'                                           
-7
-RPAREN              :   )                                                           
-7
-SEMICOLON           :   ;                                                           
-7
-UNTIL               :   UNTIL                                                       
-8
-IDENTIFIER          :   i                                                           
-8
-EQUAL               :   =                                                           
-8
-INTEGER             :   5                                                           
-8
-SEMICOLON           :   ;                                                           
-8
-END                 :   END                                                         
-9
-PERIOD              :   .                                                           
-9
+PARSER OUTPUT
+<PROGRAM line=1>
+   <COMPOUND line=2>
+      <LOOP line=3>
+         <VARIABLE line=3 name=/>
+         <TEST line=3>
+            <INTEGER_CONSTANT line=3 value=10/>
+            <INTEGER_CONSTANT line=3 value=1/>
+         <TEST/>
+         <WRITELN line=4>
+            <LIST line=4>
+               <STRING_CONSTANT line=4 value='wow'/>
+            <LIST/>
+         <WRITELN/>
+      <LOOP/>
+      <CASE line=5>
+         <VARIABLE line=5 name=x/>
+         <CASEELEM line=6>
+            <LIST line=6>
+               <INTEGER_CONSTANT line=6 value=1/>
+            <LIST/>
+            <ASSIGN line=6>
+               <VARIABLE line=6 name=i/>
+               <INTEGER_CONSTANT line=6 value=1/>
+            <ASSIGN/>
+         <CASEELEM/>
+         <CASEELEM line=7>
+            <LIST line=7>
+               <INTEGER_CONSTANT line=7 value=2/>
+            <LIST/>
+            <ASSIGN line=7>
+               <VARIABLE line=7 name=i/>
+               <INTEGER_CONSTANT line=7 value=1/>
+            <ASSIGN/>
+         <CASEELEM/>
+         <CASEELEM line=8>
+            <LIST line=8>
+               <INTEGER_CONSTANT line=8 value=3/>
+            <LIST/>
+            <ASSIGN line=8>
+               <VARIABLE line=8 name=i/>
+               <ADD line=8>
+                  <INTEGER_CONSTANT line=8 value=1/>
+                  <INTEGER_CONSTANT line=8 value=1/>
+               <ADD/>
+            <ASSIGN/>
+         <CASEELEM/>
+      <CASE/>
+      <WRITELN line=10>
+         <LIST line=10>
+            <STRING_CONSTANT line=10 value='This is a test line'/>
+         <LIST/>
+      <WRITELN/>
+      <WRITELN line=11>
+         <LIST line=11>
+            <STRING_CONSTANT line=11 value='testing 123 123 line line'/>
+         <LIST/>
+      <WRITELN/>
+      <WRITELN line=12>
+         <LIST line=12>
+            <VARIABLE line=12 name=i/>
+            <STRING_CONSTANT line=12 value='testing  123 line line'/>
+         <LIST/>
+      <WRITELN/>
+      <WRITELN line=13>
+         <LIST line=13>
+            <STRING_CONSTANT line=13 value='ne'/>
+            <VARIABLE line=13 name=y/>
+         <LIST/>
+      <WRITELN/>
+      <WRITE line=14>
+         <LIST line=14>
+            <STRING_CONSTANT line=14 value='est line'/>
+         <LIST/>
+      <WRITE/>
+      <LOOP line=15>
+         <ASSIGN line=16>
+            <VARIABLE line=16 name=i/>
+            <INTEGER_CONSTANT line=16 value=4/>
+         <ASSIGN/>
+         <ASSIGN line=17>
+            <VARIABLE line=17 name=x/>
+            <INTEGER_CONSTANT line=17 value=1/>
+         <ASSIGN/>
+         <ASSIGN line=18>
+            <VARIABLE line=18 name=y/>
+            <INTEGER_CONSTANT line=18 value=10/>
+         <ASSIGN/>
+         <TEST line=19>
+            <EQ line=19>
+               <VARIABLE line=19 name=y/>
+               <INTEGER_CONSTANT line=19 value=1/>
+            <EQ/>
+         <TEST/>
+      <LOOP/>
+      <LOOP line=20>
+         <TEST line=20>
+            <LT line=20>
+               <VARIABLE line=20 name=y/>
+               <INTEGER_CONSTANT line=20 value=1/>
+            <LT/>
+         <TEST/>
+         <COMPOUND line=21>
+            <WRITE line=22>
+               <LIST line=22>
+                  <STRING_CONSTANT line=22 value='this is a while loop'/>
+               <LIST/>
+            <WRITE/>
+            <WRITELN line=23>
+               <LIST line=23>
+                  <STRING_CONSTANT line=23 value='test write'/>
+               <LIST/>
+            <WRITELN/>
+            <WRITE line=23>
+               <LIST line=23>
+                  <STRING_CONSTANT line=23 value='wow'/>
+               <LIST/>
+            <WRITE/>
+         <COMPOUND/>
+      <LOOP/>
+      <ASSIGN line=25>
+         <VARIABLE line=25 name=i/>
+         <INTEGER_CONSTANT line=25 value=0/>
+      <ASSIGN/>
+      <LOOP line=26>
+         <ASSIGN line=27>
+            <VARIABLE line=27 name=i/>
+            <SUBTRACT line=27>
+               <INTEGER_CONSTANT line=27 value=10/>
+               <VARIABLE line=27 name=y/>
+            <SUBTRACT/>
+         <ASSIGN/>
+         <WRITE line=28>
+            <LIST line=28>
+               <STRING_CONSTANT line=28 value='123&'/>
+            <LIST/>
+         <WRITE/>
+         <WRITE line=28>
+            <LIST line=28>
+               <VARIABLE line=28 name=i/>
+            <LIST/>
+         <WRITE/>
+         <WRITELN line=29>
+            <LIST line=29>
+               <STRING_CONSTANT line=29 value=' Hey'/>
+            <LIST/>
+         <WRITELN/>
+         <TEST line=30>
+            <EQ line=30>
+               <VARIABLE line=30 name=i/>
+               <INTEGER_CONSTANT line=30 value=5/>
+            <EQ/>
+         <TEST/>
+      <LOOP/>
+   <COMPOUND/>
+<PROGRAM/>
+
+SYMBOL TABLE
+y int
+x int
+i int
+
