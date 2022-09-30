@@ -1,154 +1,154 @@
 PARSER OUTPUT
 <PROGRAM line=1>
-   <COMPOUND line=2>
-      <LOOP line=3>
-         <VARIABLE line=3 name=i/>
-         <TEST line=3>
-            <INTEGER_CONSTANT line=3 value=10/>
-            <INTEGER_CONSTANT line=3 value=1/>
+   <COMPOUND line=3>
+      <LOOP line=5>
+         <VARIABLE line=5 name=i/>
+         <TEST line=5>
+            <INTEGER_CONSTANT line=5 value=10/>
+            <INTEGER_CONSTANT line=5 value=1/>
          <TEST/>
-         <WRITELN line=4>
-            <LIST line=4>
-               <STRING_CONSTANT line=4 value='wow'/>
+         <WRITELN line=7>
+            <LIST line=7>
+               <STRING_CONSTANT line=7 value='wow'/>
             <LIST/>
          <WRITELN/>
       <LOOP/>
-      <CASE line=5>
-         <VARIABLE line=5 name=x/>
-         <CASEELEM line=6>
-            <LIST line=6>
-               <INTEGER_CONSTANT line=6 value=1/>
+      <CASE line=9>
+         <VARIABLE line=9 name=x/>
+         <CASEELEM line=11>
+            <LIST line=11>
+               <INTEGER_CONSTANT line=11 value=1/>
             <LIST/>
-            <ASSIGN line=6>
-               <VARIABLE line=6 name=i/>
-               <INTEGER_CONSTANT line=6 value=1/>
+            <ASSIGN line=11>
+               <VARIABLE line=11 name=i/>
+               <VARIABLE line=11 name=1.1/>
             <ASSIGN/>
          <CASEELEM/>
-         <CASEELEM line=7>
-            <LIST line=7>
-               <INTEGER_CONSTANT line=7 value=2/>
+         <CASEELEM line=13>
+            <LIST line=13>
+               <INTEGER_CONSTANT line=13 value=2/>
             <LIST/>
-            <ASSIGN line=7>
-               <VARIABLE line=7 name=i/>
-               <INTEGER_CONSTANT line=7 value=1/>
+            <ASSIGN line=13>
+               <VARIABLE line=13 name=i/>
+               <INTEGER_CONSTANT line=13 value=1/>
             <ASSIGN/>
          <CASEELEM/>
-         <CASEELEM line=8>
-            <LIST line=8>
-               <INTEGER_CONSTANT line=8 value=3/>
+         <CASEELEM line=15>
+            <LIST line=15>
+               <INTEGER_CONSTANT line=15 value=3/>
             <LIST/>
-            <ASSIGN line=8>
-               <VARIABLE line=8 name=i/>
-               <ADD line=8>
-                  <INTEGER_CONSTANT line=8 value=1/>
-                  <INTEGER_CONSTANT line=8 value=1/>
+            <ASSIGN line=15>
+               <VARIABLE line=15 name=i/>
+               <ADD line=15>
+                  <INTEGER_CONSTANT line=15 value=1/>
+                  <INTEGER_CONSTANT line=15 value=1/>
                <ADD/>
             <ASSIGN/>
          <CASEELEM/>
       <CASE/>
-      <WRITELN line=10>
-         <LIST line=10>
-            <STRING_CONSTANT line=10 value='This is a test line'/>
+      <WRITELN line=19>
+         <LIST line=19>
+            <STRING_CONSTANT line=19 value='This is a test line'/>
          <LIST/>
       <WRITELN/>
-      <WRITELN line=11>
-         <LIST line=11>
-            <STRING_CONSTANT line=11 value='testing 123 123 line line'/>
+      <WRITELN line=21>
+         <LIST line=21>
+            <STRING_CONSTANT line=21 value='testing 123 123 line line'/>
          <LIST/>
       <WRITELN/>
-      <WRITELN line=12>
-         <LIST line=12>
-            <VARIABLE line=12 name=i/>
-            <STRING_CONSTANT line=12 value='testing  123 line line'/>
+      <WRITELN line=23>
+         <LIST line=23>
+            <VARIABLE line=23 name=i/>
+            <STRING_CONSTANT line=23 value='testing  123 line line'/>
          <LIST/>
       <WRITELN/>
-      <WRITELN line=13>
-         <LIST line=13>
-            <STRING_CONSTANT line=13 value='ne'/>
-            <VARIABLE line=13 name=y/>
+      <WRITELN line=25>
+         <LIST line=25>
+            <STRING_CONSTANT line=25 value='ne'/>
+            <VARIABLE line=25 name=y/>
          <LIST/>
       <WRITELN/>
-      <WRITE line=14>
-         <LIST line=14>
-            <STRING_CONSTANT line=14 value='est line'/>
+      <WRITE line=27>
+         <LIST line=27>
+            <STRING_CONSTANT line=27 value='est line'/>
          <LIST/>
       <WRITE/>
-      <LOOP line=15>
-         <ASSIGN line=16>
-            <VARIABLE line=16 name=i/>
-            <INTEGER_CONSTANT line=16 value=4/>
+      <LOOP line=29>
+         <ASSIGN line=31>
+            <VARIABLE line=31 name=i/>
+            <INTEGER_CONSTANT line=31 value=4/>
          <ASSIGN/>
-         <ASSIGN line=17>
-            <VARIABLE line=17 name=x/>
-            <INTEGER_CONSTANT line=17 value=1/>
+         <ASSIGN line=33>
+            <VARIABLE line=33 name=x/>
+            <INTEGER_CONSTANT line=33 value=1/>
          <ASSIGN/>
-         <ASSIGN line=18>
-            <VARIABLE line=18 name=y/>
-            <INTEGER_CONSTANT line=18 value=10/>
+         <ASSIGN line=35>
+            <VARIABLE line=35 name=y/>
+            <INTEGER_CONSTANT line=35 value=10/>
          <ASSIGN/>
-         <TEST line=19>
-            <EQ line=19>
-               <VARIABLE line=19 name=y/>
-               <INTEGER_CONSTANT line=19 value=1/>
+         <TEST line=37>
+            <EQ line=37>
+               <VARIABLE line=37 name=y/>
+               <INTEGER_CONSTANT line=37 value=1/>
             <EQ/>
          <TEST/>
       <LOOP/>
-      <LOOP line=20>
-         <TEST line=20>
-            <LT line=20>
-               <VARIABLE line=20 name=y/>
-               <INTEGER_CONSTANT line=20 value=1/>
+      <LOOP line=39>
+         <TEST line=39>
+            <LT line=39>
+               <VARIABLE line=39 name=y/>
+               <INTEGER_CONSTANT line=39 value=1/>
             <LT/>
          <TEST/>
-         <COMPOUND line=21>
-            <WRITE line=22>
-               <LIST line=22>
-                  <STRING_CONSTANT line=22 value='this is a while loop'/>
+         <COMPOUND line=41>
+            <WRITE line=43>
+               <LIST line=43>
+                  <STRING_CONSTANT line=43 value='this is a while loop'/>
                <LIST/>
             <WRITE/>
-            <WRITELN line=23>
-               <LIST line=23>
-                  <STRING_CONSTANT line=23 value='test write'/>
+            <WRITELN line=45>
+               <LIST line=45>
+                  <STRING_CONSTANT line=45 value='test write'/>
                <LIST/>
             <WRITELN/>
-            <WRITE line=23>
-               <LIST line=23>
-                  <STRING_CONSTANT line=23 value='wow'/>
+            <WRITE line=45>
+               <LIST line=45>
+                  <STRING_CONSTANT line=45 value='wow'/>
                <LIST/>
             <WRITE/>
          <COMPOUND/>
       <LOOP/>
-      <ASSIGN line=25>
-         <VARIABLE line=25 name=i/>
-         <INTEGER_CONSTANT line=25 value=0/>
+      <ASSIGN line=49>
+         <VARIABLE line=49 name=i/>
+         <INTEGER_CONSTANT line=49 value=0/>
       <ASSIGN/>
-      <LOOP line=26>
-         <ASSIGN line=27>
-            <VARIABLE line=27 name=i/>
-            <SUBTRACT line=27>
-               <INTEGER_CONSTANT line=27 value=10/>
-               <VARIABLE line=27 name=y/>
+      <LOOP line=51>
+         <ASSIGN line=53>
+            <VARIABLE line=53 name=i/>
+            <SUBTRACT line=53>
+               <INTEGER_CONSTANT line=53 value=10/>
+               <VARIABLE line=53 name=y/>
             <SUBTRACT/>
          <ASSIGN/>
-         <WRITE line=28>
-            <LIST line=28>
-               <STRING_CONSTANT line=28 value='123&'/>
+         <WRITE line=55>
+            <LIST line=55>
+               <STRING_CONSTANT line=55 value='123&'/>
             <LIST/>
          <WRITE/>
-         <WRITE line=28>
-            <LIST line=28>
-               <VARIABLE line=28 name=i/>
+         <WRITE line=55>
+            <LIST line=55>
+               <VARIABLE line=55 name=i/>
             <LIST/>
          <WRITE/>
-         <WRITELN line=29>
-            <LIST line=29>
-               <STRING_CONSTANT line=29 value=' Hey'/>
+         <WRITELN line=57>
+            <LIST line=57>
+               <STRING_CONSTANT line=57 value=' Hey'/>
             <LIST/>
          <WRITELN/>
-         <TEST line=30>
-            <EQ line=30>
-               <VARIABLE line=30 name=i/>
-               <INTEGER_CONSTANT line=30 value=5/>
+         <TEST line=59>
+            <EQ line=59>
+               <VARIABLE line=59 name=i/>
+               <INTEGER_CONSTANT line=59 value=5/>
             <EQ/>
          <TEST/>
       <LOOP/>
@@ -157,6 +157,7 @@ PARSER OUTPUT
 
 SYMBOL TABLE
 y int
+1.1 int
 x int
 i int
 

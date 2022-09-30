@@ -137,6 +137,13 @@ Node *Parser::parseUnsignedConstant() {
     head->setLine(scanner.getCurTok().line);
     scanner.nextToken();
     return head;
+  } else if (scanner.getCurTok().label == "REAL") {
+    Node *head = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
+    symTab.insert(scanner.getCurTok().value);
+    head->setName(scanner.getCurTok().value);
+    head->setLine(scanner.getCurTok().line);
+    scanner.nextToken();
+    return head;
   } else if (scanner.getCurTok().label == "IDENTIFIER") {
     Node *head = new Node(NodeType::VARIABLE, scanner.getCurTok().line);
     symTab.insert(scanner.getCurTok().value);
